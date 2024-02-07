@@ -44,8 +44,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String requestURI = req.getRequestURI();
 
         List<String> exemptedUrls = Arrays.asList(
-                "/api/user/signup",
-                "/api/user/login"
+                "/api/users/register",
+                "/api/users/login"
         );
 
         if ("GET".equals(method) || exemptedUrls.contains(requestURI)) {
