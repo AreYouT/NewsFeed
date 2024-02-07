@@ -40,8 +40,8 @@ public class UserController {
             @Valid @RequestBody String password){
         log.info("비밀번호 변경");
 
-        userService.passwordUpdate(userDetails, password);
+        UserInfoResponseDto userInfoResponseDto = userService.passwordUpdate(userDetails.getUser(), password);
 
-        return new ResponseEntity<UserInfoResponseDto>(HttpStatus.OK);
+        return new ResponseEntity<UserInfoResponseDto>(userInfoResponseDto, HttpStatus.OK);
     }
 }

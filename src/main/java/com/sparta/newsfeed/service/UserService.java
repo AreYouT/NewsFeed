@@ -6,6 +6,7 @@ import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.UserRepository;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,14 @@ public class UserService {
         return new UserInfoResponseDto(user);
     }
 
-    public void passwordUpdate(UserDetailsImpl userDetails, String formPassword) {
-        String password = userDetails.getPassword();
+    public UserInfoResponseDto passwordUpdate(User user, String formPassword) {
+
+        if(!user.getPassword().equals(formPassword)){
+            throw new IllegalArgumentException();
+        }
+
+        user.updatePassword(formPassword);
+
+        return new UserInfoResponseDto(user);
     }
 }

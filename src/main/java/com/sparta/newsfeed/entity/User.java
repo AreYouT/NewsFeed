@@ -27,16 +27,13 @@ public class User {
     @Column(nullable = false)
     private String mbti;
 
-    public User(UserInfoRequestDto requestDto) {
-        this.username = requestDto.getUsername();
-        this.password = requestDto.getPassword();
-        this.email = requestDto.getEmail();
-        this.mbti = requestDto.getMbti();
-    }
-
     public void userInfoUpdate(UserInfoRequestDto requestDto){
         this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
         this.mbti = requestDto.getMbti();
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
     }
 }
