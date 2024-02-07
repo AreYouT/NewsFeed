@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.entity;
 
 
+import com.sparta.newsfeed.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -33,11 +34,12 @@ public class Post extends Timestamped{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Post(String category, String title, String contents, User user) {
-        this.category = category;
-        this.title = title;
-        this.contents = contents;
+    public Post(PostRequestDto requestDto, User user) {
+        this.category = this.getCategory();
+        this.title = this.getTitle();
+        this.contents = this.getContents();
         this.user = user;
     }
+
 
 }
