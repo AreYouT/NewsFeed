@@ -22,9 +22,13 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    public User(String username, String password, String email) {
+    @Column(nullable = false)
+    private String mbti;
+
+    public User(String username, String password, String email, String mbti) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.mbti = mbti;
     }
 }
