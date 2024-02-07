@@ -1,5 +1,7 @@
 package com.sparta.newsfeed.entity;
 
+import com.sparta.newsfeed.dto.UserInfoRequestDto;
+import com.sparta.newsfeed.dto.UserInfoResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +24,19 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    @Column(nullable = false)
+    private String mbti;
+
+    public User(UserInfoRequestDto requestDto) {
+        this.username = requestDto.getUsername();
+        this.password = requestDto.getPassword();
+        this.email = requestDto.getEmail();
+        this.mbti = requestDto.getMbti();
+    }
+
+    public void userInfoUpdate(UserInfoRequestDto requestDto){
+        this.username = requestDto.getUsername();
+        this.email = requestDto.getEmail();
+        this.mbti = requestDto.getMbti();
     }
 }
