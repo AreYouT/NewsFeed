@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<UserInfoResponseDto> userUpdate(
+    public ResponseEntity<ResponseDto<UserInfoResponseDto>> userUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody UserInfoRequestDto requestDto){
 
@@ -57,12 +57,16 @@ public class UserController {
 
         UserInfoResponseDto userInfoResponseDto = userService.userUpdate(userDetails, requestDto);
 
-        log.info(userInfoResponseDto.getUsername());
-        return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
+        return ResponseEntity.ok()
+                .body(ResponseDto.<UserInfoResponseDto>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("회원정보 수정 성공")
+                        .data(userInfoResponseDto)
+                        .build());
     }
 
     @PatchMapping("/update/password")
-    public ResponseEntity<UserInfoResponseDto> passwordUpdate(
+    public ResponseEntity<ResponseDto<UserInfoResponseDto>> passwordUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody PasswordRequestDto requestDto){
 
@@ -70,6 +74,11 @@ public class UserController {
 
         UserInfoResponseDto userInfoResponseDto = userService.passwordUpdate(userDetails, requestDto);
 
-        return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
+        return ResponseEntity.ok()
+                .body(ResponseDto.<UserInfoResponseDto>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("회원정보 수정 성공")
+                        .data(userInfoResponseDto)
+                        .build());
     }
 }
