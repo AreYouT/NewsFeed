@@ -1,13 +1,15 @@
 package com.sparta.newsfeed.service;
 
-import com.sparta.newsfeed.dto.PostListResponseDto;
+import com.sparta.newsfeed.dto.PostResponseDto;
 import com.sparta.newsfeed.dto.PostRequestDto;
+import com.sparta.newsfeed.dto.PostResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Comparator;
 import java.util.List;
@@ -26,11 +28,11 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostListResponseDto> findByCategoryNameToList(String category) {
+    public List<PostResponseDto> findByCategoryNameToList(String category) {
         return postRepository.findByCategory(category)
                 .stream()
-                .map(PostListResponseDto::new)
-                .sorted(Comparator.comparing(PostListResponseDto::getModifiedAt).reversed())
+                .map(PostResponseDto::new)
+                .sorted(Comparator.comparing(PostResponseDto::getModifiedAt).reversed())
                 .toList();
 
 

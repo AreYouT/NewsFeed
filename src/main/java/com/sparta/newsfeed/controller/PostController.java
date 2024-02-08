@@ -1,10 +1,11 @@
 package com.sparta.newsfeed.controller;
 
-import com.sparta.newsfeed.dto.PostListResponseDto;
+import com.sparta.newsfeed.dto.PostResponseDto;
 import com.sparta.newsfeed.dto.PostRequestDto;
+import com.sparta.newsfeed.dto.ResponseDto;
+import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.PostService;
-import jdk.jfr.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,42 +26,32 @@ public class PostController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<ResponseForm> savePost(
+    public ResponseEntity<ResponseDto<PostResponseDto>> savePost(
             @RequestBody PostRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
 
-        postService.savePost(requestDto, userDetails.getUser());
+        PostResponseDto responseDto = postService.savePost(requestDto, userDetails.getUser());
 
-        ResponseForm form = new ResponseForm();
+        ResponseDto<PostResponseDto> form = new ResponseDto<>(HttpStatus.OK, "success", responseDto);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        form.setStatus(StatusEnum.CREATED);
-        form.setMessage("게시글이 정상적으로 등록되었습니다.");
+
 
         return new ResponseEntity<>(form, headers, HttpStatus.CREATED);
 
     }
 
     @GetMapping("/{category}")
-    public ResponseEntity<ResponseForm> findByCategoryNameToList(
+    public ResponseEntity<ResponseDto<List<PostResponseDto>>> findByCategoryNameToList(
            @PathVariable String category
     ){
-        List<PostListResponseDto> responseDtoList = postService.findByCategoryNameToList(category);
+        List<PostResponseDto> responseDtoList = postService.findByCategoryNameToList(category);
 
-        ResponseForm form = new ResponseForm();
-
-        form.setStatus(StatusEnum.OK);
-        form.setData(responseDtoList);
+        ResponseDto<List<PostResponseDto>> form = new ResponseDto<>(HttpStatus.OK, "success", responseDtoList);
 
         return new ResponseEntity<>(form,HttpStatus.OK);
     }
-
-
-
-
-
-
-
 }
