@@ -7,7 +7,6 @@ import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.response.PostResponse;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.PostService;
-import jdk.jfr.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -75,7 +74,7 @@ public class PostController {
         );
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{category}/{id}")
     public ResponseEntity<PostResponse<PostResponseDto>> getPostById(@PathVariable Long id) {
         try {
             Post post = postService.getPostById(id);
