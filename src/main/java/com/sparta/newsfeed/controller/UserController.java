@@ -1,5 +1,6 @@
 package com.sparta.newsfeed.controller;
 
+import com.sparta.newsfeed.dto.PasswordRequestDto;
 import com.sparta.newsfeed.dto.RegisterRequestDto;
 import com.sparta.newsfeed.dto.UserInfoRequestDto;
 import com.sparta.newsfeed.dto.UserInfoResponseDto;
