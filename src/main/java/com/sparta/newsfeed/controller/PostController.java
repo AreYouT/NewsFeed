@@ -45,7 +45,7 @@ public class PostController {
 
     @GetMapping("/{category}")
     public ResponseEntity<ResponseForm> findByCategoryNameToList(
-           @PathVariable String  category
+           @PathVariable String category
     ){
         List<PostListResponseDto> responseDtoList = postService.findByCategoryNameToList(category);
 
