@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class PostListResponseDto {
+public class PostResponseDto {
 
     private Long id;
 
@@ -26,7 +26,7 @@ public class PostListResponseDto {
 
     private LocalDateTime modifiedAt;
 
-    public PostListResponseDto(Post post) {
+    public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.contents = post.getContents();

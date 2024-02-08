@@ -15,10 +15,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @Slf4j
 @RestController
@@ -28,9 +26,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDto requestDto,
-                                      BindingResult bindingResult) {
+
+    @PostMapping("register")
+    public ResponseEntity<String> register(
+            @Valid @RequestBody RegisterRequestDto requestDto,
+            BindingResult bindingResult) {
+
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         if(!fieldErrors.isEmpty()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
