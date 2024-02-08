@@ -26,7 +26,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     public void register(RegisterRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
@@ -64,6 +63,7 @@ public class UserService {
         }
 
         findUser.userInfoUpdate(requestDto);
+
 
         return new UserInfoResponseDto(findUser);
     }
