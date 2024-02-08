@@ -1,9 +1,6 @@
 package com.sparta.newsfeed.controller;
 
-import com.sparta.newsfeed.dto.PasswordRequestDto;
-import com.sparta.newsfeed.dto.RegisterRequestDto;
-import com.sparta.newsfeed.dto.UserInfoRequestDto;
-import com.sparta.newsfeed.dto.UserInfoResponseDto;
+import com.sparta.newsfeed.dto.*;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
 import jakarta.validation.Valid;
@@ -26,9 +23,8 @@ public class UserController {
 
     private final UserService userService;
 
-
-    @PostMapping("/register")
-    public ResponseEntity<String> register(
+    @PostMapping("register")
+    public ResponseEntity<ResponseDto<String>> register(
             @Valid @RequestBody RegisterRequestDto requestDto,
             BindingResult bindingResult) {
 
@@ -37,15 +33,20 @@ public class UserController {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
-
-            return new ResponseEntity<>("회원가입에 실패했습니다.", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok()
+                    .body(ResponseDto.<String>builder()
+                            .httpStatus(HttpStatus.BAD_REQUEST.value())
+                            .message("회원가입에 실패했습니다.")
+                            .build());
         }
 
         userService.register(requestDto);
-        return new ResponseEntity<>("회원가입이 완료되었습니다.", HttpStatus.OK);
+        return ResponseEntity.ok()
+                .body(ResponseDto.<String>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("회원가입에 성공하였습니다.")
+                        .build());
     }
-
-
 
     @PatchMapping("/update")
     public ResponseEntity<UserInfoResponseDto> userUpdate(

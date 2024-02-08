@@ -21,7 +21,6 @@ public class PostService {
         Post post = new Post(requestDto,user);
         postRepository.save(post);
         return new PostResponseDto(post);
-
     }
 
     public List<PostResponseDto> findByCategoryNameToList(String category) {
@@ -30,7 +29,5 @@ public class PostService {
                 .map(PostResponseDto::new)
                 .sorted(Comparator.comparing(PostResponseDto::getModifiedAt).reversed())
                 .toList();
-
-
     }
 }
