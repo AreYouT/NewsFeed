@@ -1,9 +1,6 @@
 package com.sparta.newsfeed.controller;
 
-import com.sparta.newsfeed.dto.PasswordRequestDto;
-import com.sparta.newsfeed.dto.RegisterRequestDto;
-import com.sparta.newsfeed.dto.UserInfoRequestDto;
-import com.sparta.newsfeed.dto.UserInfoResponseDto;
+import com.sparta.newsfeed.dto.*;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
 import jakarta.validation.Valid;
@@ -27,8 +24,10 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDto requestDto,
-                                      BindingResult bindingResult) {
+    public ResponseEntity<ResponseDto<String>> register(
+            @Valid @RequestBody RegisterRequestDto requestDto,
+            BindingResult bindingResult) {
+
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         if(!fieldErrors.isEmpty()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -48,8 +47,6 @@ public class UserController {
                         .message("회원가입에 성공하였습니다.")
                         .build());
     }
-
-
 
     @PatchMapping("/update")
     public ResponseEntity<UserInfoResponseDto> userUpdate(
