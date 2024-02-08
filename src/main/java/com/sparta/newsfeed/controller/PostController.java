@@ -77,7 +77,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<ResponseForm> deleteTodo(@PathVariable Long postId,
+    public ResponseEntity<ResponseForm> deletePost(@PathVariable Long postId,
                                                    @RequestBody PostRequestDto dto,
                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         postService.deleteToDo(postId, userDetails.getUser());
