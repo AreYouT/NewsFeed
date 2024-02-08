@@ -1,6 +1,8 @@
 package com.sparta.newsfeed.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Setter
