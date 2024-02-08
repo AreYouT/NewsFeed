@@ -2,6 +2,7 @@ package com.sparta.newsfeed.controller;
 
 import com.sparta.newsfeed.dto.PostListResponseDto;
 import com.sparta.newsfeed.dto.PostRequestDto;
+import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.PostService;
 import jdk.jfr.Category;
@@ -57,7 +58,37 @@ public class PostController {
         return new ResponseEntity<>(form,HttpStatus.OK);
     }
 
+    // 게시글 수정
+    @PutMapping("/{postId}")
+    public ResponseEntity<ResponseForm> updatePost(@PathVariable Long postId,
+                                                   @RequestBody PostRequestDto dto,
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Post post = postService.updatePost(postId, dto,userDetails.getUser());
 
+        ResponseForm form = new ResponseForm();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        form.setStatus(StatusEnum.OK);
+        form.setMessage("게시글이 정상적으로 수정되었습니다.");
+        form.setData(post);
+
+        return new ResponseEntity<>(form, headers, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<ResponseForm> deleteTodo(@PathVariable Long postId,
+                                                   @RequestBody PostRequestDto dto,
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        postService.deleteToDo(postId, userDetails.getUser());
+
+        ResponseForm form = new ResponseForm();
+
+        form.setStatus(StatusEnum.OK);
+        form.setMessage("게시글이 정상적으로 삭제되었습니다.");
+
+        return new ResponseEntity<>(form, HttpStatus.OK);
+    }
 
 
 

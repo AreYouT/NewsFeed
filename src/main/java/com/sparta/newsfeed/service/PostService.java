@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +32,30 @@ public class PostService {
                 .toList();
 
 
+    }
+
+    // 게시글 수정
+    public Post updatePost(Long postId, PostRequestDto dto, User user) {
+//        Post post = checkPWAndGetToDo(postId, user.getPassword());
+        Post post = getPost(postId);
+
+        // 아이디 체크
+        if(user.getPassword() != null && !Objects.equals(post.getUser().getId(),user.getId()))
+            throw new IllegalArgumentException();
+
+        post.setTitle(dto.getTitle());
+        post.setContents(dto.getContents());
+        return postRepository.save(post);
+    }
+
+    // 게시글 삭제
+    public void deleteToDo(Long postId, User user) {
+        Post post = getPost(postId);
+
+        // 아이디 체크
+        if(user.getId() != null && !Objects.equals(post.getUser().getId(),user.getId()))
+            throw new IllegalArgumentException();
+
+        postRepository.delete(post);
     }
 }
