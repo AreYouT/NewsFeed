@@ -13,8 +13,8 @@ public class UserInfoResponseDto {
     private String mbti;
 
     public UserInfoResponseDto(User user) {
-        this.username = username;
-        this.email = email;
-        this.mbti = mbti;
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.mbti = user.getMbti();
     }
 }
