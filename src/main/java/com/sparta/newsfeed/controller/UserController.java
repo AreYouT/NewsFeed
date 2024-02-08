@@ -1,5 +1,6 @@
 package com.sparta.newsfeed.controller;
 
+import com.sparta.newsfeed.dto.PasswordRequestDto;
 import com.sparta.newsfeed.dto.RegisterRequestDto;
 import com.sparta.newsfeed.dto.UserInfoRequestDto;
 import com.sparta.newsfeed.dto.UserInfoResponseDto;
@@ -27,7 +28,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDto requestDto,
                                       BindingResult bindingResult) {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -48,22 +49,24 @@ public class UserController {
     @PatchMapping("/update")
     public ResponseEntity<UserInfoResponseDto> userUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestBody UserInfoRequestDto requestDto){
+            @Valid @RequestBody UserInfoRequestDto requestDto,
+            BindingResult bindingResult){
         log.info("회원정보 수정");
 
-        UserInfoResponseDto userInfoResponseDto = userService.userUpdate(userDetails.getUser(), requestDto);
+        UserInfoResponseDto userInfoResponseDto = userService.userUpdate(userDetails, requestDto);
 
-        return new ResponseEntity<UserInfoResponseDto>(userInfoResponseDto, HttpStatus.OK);
+        log.info(userInfoResponseDto.getUsername());
+        return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
     }
 
     @PatchMapping("/update/password")
     public ResponseEntity<UserInfoResponseDto> passwordUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestBody String password){
+            @Valid @RequestBody PasswordRequestDto requestDto){
         log.info("비밀번호 변경");
 
-        UserInfoResponseDto userInfoResponseDto = userService.passwordUpdate(userDetails.getUser(), password);
+        UserInfoResponseDto userInfoResponseDto = userService.passwordUpdate(userDetails, requestDto);
 
-        return new ResponseEntity<UserInfoResponseDto>(userInfoResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
     }
 }
