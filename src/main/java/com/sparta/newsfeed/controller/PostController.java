@@ -1,9 +1,8 @@
 package com.sparta.newsfeed.controller;
 
-import com.sparta.newsfeed.dto.PostResponseDto;
 import com.sparta.newsfeed.dto.PostRequestDto;
+import com.sparta.newsfeed.dto.PostResponseDto;
 import com.sparta.newsfeed.dto.ResponseDto;
-import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.PostService;
 import lombok.RequiredArgsConstructor;
