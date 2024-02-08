@@ -29,17 +29,21 @@ public class PostController {
             @RequestBody PostRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
-
-        PostResponseDto responseDto = postService.savePost(requestDto, userDetails.getUser());
-
-        ResponseDto<PostResponseDto> form = new ResponseDto<>(HttpStatus.OK, "success", responseDto);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-
-
-
-        return new ResponseEntity<>(form, headers, HttpStatus.CREATED);
+//        빌더 패턴 적용전 코드
+//        PostResponseDto responseDto = postService.savePost(requestDto, userDetails.getUser());
+//
+//        ResponseDto<PostResponseDto> form = new ResponseDto<>(HttpStatus.OK, "success", responseDto);
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+//
+//        return new ResponseEntity<>(form, headers, HttpStatus.CREATED);
+        return ResponseEntity.ok()
+                .body(ResponseDto.<PostResponseDto>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("success")
+                        .data(postService.savePost(requestDto, userDetails.getUser()))
+                        .build());
 
     }
 
@@ -47,10 +51,11 @@ public class PostController {
     public ResponseEntity<ResponseDto<List<PostResponseDto>>> findByCategoryNameToList(
            @PathVariable String category
     ){
-        List<PostResponseDto> responseDtoList = postService.findByCategoryNameToList(category);
-
-        ResponseDto<List<PostResponseDto>> form = new ResponseDto<>(HttpStatus.OK, "success", responseDtoList);
-
-        return new ResponseEntity<>(form,HttpStatus.OK);
+        return ResponseEntity.ok()
+                .body(ResponseDto.<List<PostResponseDto>>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("success")
+                        .data(postService.findByCategoryNameToList(category))
+                        .build());
     }
 }
