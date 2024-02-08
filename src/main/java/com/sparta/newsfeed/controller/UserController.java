@@ -49,8 +49,8 @@ public class UserController {
     @PatchMapping("/update")
     public ResponseEntity<UserInfoResponseDto> userUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestBody UserInfoRequestDto requestDto,
-            BindingResult bindingResult){
+            @Valid @RequestBody UserInfoRequestDto requestDto){
+
         log.info("회원정보 수정");
 
         UserInfoResponseDto userInfoResponseDto = userService.userUpdate(userDetails, requestDto);
@@ -63,6 +63,7 @@ public class UserController {
     public ResponseEntity<UserInfoResponseDto> passwordUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody PasswordRequestDto requestDto){
+
         log.info("비밀번호 변경");
 
         UserInfoResponseDto userInfoResponseDto = userService.passwordUpdate(userDetails, requestDto);
