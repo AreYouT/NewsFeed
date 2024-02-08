@@ -24,6 +24,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Transactional
     public void register(RegisterRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
@@ -55,6 +57,7 @@ public class UserService {
         return new UserInfoResponseDto(user);
     }
 
+    @Transactional
     public UserInfoResponseDto passwordUpdate(User user, String formPassword) {
 
         if(!user.getPassword().equals(formPassword)){
