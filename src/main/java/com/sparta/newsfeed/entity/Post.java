@@ -2,11 +2,15 @@ package com.sparta.newsfeed.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.web.ErrorResponse;
 
 @Entity
 @Getter
 @Table(name = "posts")
+@NoArgsConstructor
 public class Post extends Timestamped{
 
     @Id
@@ -33,11 +37,11 @@ public class Post extends Timestamped{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+
     public Post(String category, String title, String contents, User user) {
         this.category = category;
         this.title = title;
         this.contents = contents;
         this.user = user;
     }
-
 }
