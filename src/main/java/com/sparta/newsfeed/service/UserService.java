@@ -85,7 +85,7 @@ public class UserService {
             throw new IllegalArgumentException("이전 비밀번호와 일치합니다.");
         }
 
-        findUser.updatePassword(requestDto.getNewPassword());
+        findUser.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
 
         return new UserInfoResponseDto(findUser);
     }
