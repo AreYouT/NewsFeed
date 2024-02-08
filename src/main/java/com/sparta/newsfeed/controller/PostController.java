@@ -1,8 +1,10 @@
 package com.sparta.newsfeed.controller;
 
+import com.sparta.newsfeed.dto.PostListResponseDto;
 import com.sparta.newsfeed.dto.PostRequestDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.PostService;
+import jdk.jfr.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +41,20 @@ public class PostController {
 
         return new ResponseEntity<>(form, headers, HttpStatus.CREATED);
 
+    }
+
+    @GetMapping("/{category}")
+    public ResponseEntity<ResponseForm> findByCategoryNameToList(
+           @PathVariable String  category
+    ){
+        List<PostListResponseDto> responseDtoList = postService.findByCategoryNameToList(category);
+
+        ResponseForm form = new ResponseForm();
+
+        form.setStatus(StatusEnum.OK);
+        form.setData(responseDtoList);
+
+        return new ResponseEntity<>(form,HttpStatus.OK);
     }
 
 

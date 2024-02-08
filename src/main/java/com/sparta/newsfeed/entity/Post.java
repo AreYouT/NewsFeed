@@ -3,11 +3,14 @@ package com.sparta.newsfeed.entity;
 
 import com.sparta.newsfeed.dto.PostRequestDto;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "posts")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends Timestamped{
 
     @Id
