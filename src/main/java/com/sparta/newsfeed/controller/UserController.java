@@ -34,12 +34,19 @@ public class UserController {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
-
-            return new ResponseEntity<>("회원가입에 실패했습니다.", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok()
+                    .body(ResponseDto.<String>builder()
+                            .httpStatus(HttpStatus.BAD_REQUEST.value())
+                            .message("회원가입에 실패했습니다.")
+                            .build());
         }
 
         userService.register(requestDto);
-        return new ResponseEntity<>("회원가입이 완료되었습니다.", HttpStatus.OK);
+        return ResponseEntity.ok()
+                .body(ResponseDto.<String>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("회원가입에 성공하였습니다.")
+                        .build());
     }
 
 

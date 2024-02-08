@@ -7,8 +7,6 @@ import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.Comparator;
 import java.util.List;
