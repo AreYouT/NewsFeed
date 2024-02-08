@@ -1,16 +1,18 @@
 package com.sparta.newsfeed.service;
 
-import com.sparta.newsfeed.dto.PostListResponseDto;
 import com.sparta.newsfeed.dto.PostRequestDto;
+import com.sparta.newsfeed.dto.PostResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,25 +20,33 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public void savePost(PostRequestDto requestDto, User user) {
-
-        postRepository.save(new Post(requestDto,user));
-
+    public PostResponseDto savePost(PostRequestDto requestDto, User user) {
+        Post post = new Post();
+        postRepository.save(post);
+        return new PostResponseDto(post);
     }
 
-    public List<PostListResponseDto> findByCategoryNameToList(String category) {
+    public List<PostResponseDto> findByCategoryNameToList(String category) {
         return postRepository.findByCategory(category)
                 .stream()
-                .map(PostListResponseDto::new)
-                .sorted(Comparator.comparing(PostListResponseDto::getModifiedAt).reversed())
+                .map(PostResponseDto::new)
+                .sorted(Comparator.comparing(PostResponseDto::getModifiedAt).reversed())
                 .toList();
-
-
     }
 
+    public List<Post> getRecommendedPosts() {
+        return postRepository.findAll(Sort.by("likeCount").descending());
+    }
+
+    public Post getPostById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 id에 대한 게시글을 찾을 수 없습니다."));
+    }
+  
     // 게시글 수정
+    @Transactional
     public Post updatePost(Long postId, PostRequestDto dto, User user) {
-//        Post post = checkPWAndGetToDo(postId, user.getPassword());
+  //        Post post = checkPWAndGetToDo(postId, user.getPassword());
         Post post = getPost(postId);
 
         // 아이디 체크

@@ -16,8 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -28,7 +26,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
     public void register(RegisterRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
@@ -67,6 +64,7 @@ public class UserService {
 
         findUser.userInfoUpdate(requestDto);
 
+
         return new UserInfoResponseDto(findUser);
     }
 
@@ -86,7 +84,7 @@ public class UserService {
             throw new IllegalArgumentException("이전 비밀번호와 일치합니다.");
         }
 
-        findUser.updatePassword(requestDto.getNewPassword());
+        findUser.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
 
         return new UserInfoResponseDto(findUser);
     }

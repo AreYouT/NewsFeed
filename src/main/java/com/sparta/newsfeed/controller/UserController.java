@@ -1,9 +1,6 @@
 package com.sparta.newsfeed.controller;
 
-import com.sparta.newsfeed.dto.PasswordRequestDto;
-import com.sparta.newsfeed.dto.RegisterRequestDto;
-import com.sparta.newsfeed.dto.UserInfoRequestDto;
-import com.sparta.newsfeed.dto.UserInfoResponseDto;
+import com.sparta.newsfeed.dto.*;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
 import jakarta.validation.Valid;
@@ -15,10 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @Slf4j
 @RestController
@@ -29,25 +24,32 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDto requestDto,
-                                      BindingResult bindingResult) {
+    public ResponseEntity<ResponseDto<String>> register(
+            @Valid @RequestBody RegisterRequestDto requestDto,
+            BindingResult bindingResult) {
+
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         if(!fieldErrors.isEmpty()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
-
-            return new ResponseEntity<>("회원가입에 실패했습니다.", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok()
+                    .body(ResponseDto.<String>builder()
+                            .httpStatus(HttpStatus.BAD_REQUEST.value())
+                            .message("회원가입에 실패했습니다.")
+                            .build());
         }
 
         userService.register(requestDto);
-        return new ResponseEntity<>("회원가입이 완료되었습니다.", HttpStatus.OK);
+        return ResponseEntity.ok()
+                .body(ResponseDto.<String>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("회원가입에 성공하였습니다.")
+                        .build());
     }
 
-
-
     @PatchMapping("/update")
-    public ResponseEntity<UserInfoResponseDto> userUpdate(
+    public ResponseEntity<ResponseDto<UserInfoResponseDto>> userUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody UserInfoRequestDto requestDto){
 
@@ -55,12 +57,16 @@ public class UserController {
 
         UserInfoResponseDto userInfoResponseDto = userService.userUpdate(userDetails, requestDto);
 
-        log.info(userInfoResponseDto.getUsername());
-        return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
+        return ResponseEntity.ok()
+                .body(ResponseDto.<UserInfoResponseDto>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("회원정보 수정 성공")
+                        .data(userInfoResponseDto)
+                        .build());
     }
 
     @PatchMapping("/update/password")
-    public ResponseEntity<UserInfoResponseDto> passwordUpdate(
+    public ResponseEntity<ResponseDto<UserInfoResponseDto>> passwordUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody PasswordRequestDto requestDto){
 
@@ -68,6 +74,11 @@ public class UserController {
 
         UserInfoResponseDto userInfoResponseDto = userService.passwordUpdate(userDetails, requestDto);
 
-        return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
+        return ResponseEntity.ok()
+                .body(ResponseDto.<UserInfoResponseDto>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("회원정보 수정 성공")
+                        .data(userInfoResponseDto)
+                        .build());
     }
 }
