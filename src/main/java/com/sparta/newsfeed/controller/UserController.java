@@ -1,5 +1,6 @@
 package com.sparta.newsfeed.controller;
 
+import com.sparta.newsfeed.dto.PasswordRequestDto;
 import com.sparta.newsfeed.dto.RegisterRequestDto;
 import com.sparta.newsfeed.dto.UserInfoRequestDto;
 import com.sparta.newsfeed.dto.UserInfoResponseDto;
@@ -14,10 +15,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @Slf4j
 @RestController
@@ -28,8 +27,10 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDto requestDto,
-                                      BindingResult bindingResult) {
+    public ResponseEntity<String> register(
+            @Valid @RequestBody RegisterRequestDto requestDto,
+            BindingResult bindingResult) {
+
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         if(!fieldErrors.isEmpty()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -49,21 +50,24 @@ public class UserController {
     public ResponseEntity<UserInfoResponseDto> userUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody UserInfoRequestDto requestDto){
+
         log.info("회원정보 수정");
 
-        UserInfoResponseDto userInfoResponseDto = userService.userUpdate(userDetails.getUser(), requestDto);
+        UserInfoResponseDto userInfoResponseDto = userService.userUpdate(userDetails, requestDto);
 
-        return new ResponseEntity<UserInfoResponseDto>(userInfoResponseDto, HttpStatus.OK);
+        log.info(userInfoResponseDto.getUsername());
+        return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
     }
 
     @PatchMapping("/update/password")
     public ResponseEntity<UserInfoResponseDto> passwordUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestBody String password){
+            @Valid @RequestBody PasswordRequestDto requestDto){
+
         log.info("비밀번호 변경");
 
-        UserInfoResponseDto userInfoResponseDto = userService.passwordUpdate(userDetails.getUser(), password);
+        UserInfoResponseDto userInfoResponseDto = userService.passwordUpdate(userDetails, requestDto);
 
-        return new ResponseEntity<UserInfoResponseDto>(userInfoResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
     }
 }

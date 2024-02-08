@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.entity;
 
 
+import com.sparta.newsfeed.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -39,5 +40,10 @@ public class Post extends Timestamped{
         this.contents = contents;
         this.user = user;
     }
+
+    public Post() {
+
+    }
+
 
 }

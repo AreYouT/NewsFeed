@@ -1,7 +1,6 @@
 package com.sparta.newsfeed.dto;
 
 import com.sparta.newsfeed.entity.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +12,8 @@ public class UserInfoResponseDto {
     private String mbti;
 
     public UserInfoResponseDto(User user) {
-        this.username = username;
-        this.email = email;
-        this.mbti = mbti;
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.mbti = user.getMbti();
     }
 }

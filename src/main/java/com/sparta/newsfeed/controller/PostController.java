@@ -1,10 +1,8 @@
 package com.sparta.newsfeed.controller;
 
-import com.sparta.newsfeed.controller.ResponseForm;
-import com.sparta.newsfeed.controller.StatusEnum;
-import com.sparta.newsfeed.dto.PostListResponseDto;
 import com.sparta.newsfeed.dto.PostRequestDto;
 import com.sparta.newsfeed.dto.PostResponseDto;
+import com.sparta.newsfeed.dto.ResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.response.PostResponse;
 import com.sparta.newsfeed.security.UserDetailsImpl;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,49 +30,49 @@ public class PostController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<ResponseForm> savePost(
+    public ResponseEntity<ResponseDto<PostResponseDto>> savePost(
             @RequestBody PostRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
 
-        postService.savePost(requestDto, userDetails.getUser());
+        PostResponseDto responseDto = postService.savePost(requestDto, userDetails.getUser());
 
-        ResponseForm form = new ResponseForm();
+        ResponseDto<PostResponseDto> form = new ResponseDto<>(HttpStatus.OK, "success", responseDto);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        form.setStatus(StatusEnum.CREATED);
-        form.setMessage("게시글이 정상적으로 등록되었습니다.");
+
 
         return new ResponseEntity<>(form, headers, HttpStatus.CREATED);
 
     }
 
     @GetMapping("/{category}")
-    public ResponseEntity<ResponseForm> findByCategoryNameToList(
+    public ResponseEntity<ResponseDto<List<PostResponseDto>>> findByCategoryNameToList(
             @PathVariable String category
     ){
-        List<PostListResponseDto> responseDtoList = postService.findByCategoryNameToList(category);
+        List<PostResponseDto> responseDtoList = postService.findByCategoryNameToList(category);
 
-        ResponseForm form = new ResponseForm();
-
-        form.setStatus(StatusEnum.OK);
-        form.setData(responseDtoList);
+        ResponseDto<List<PostResponseDto>> form = new ResponseDto<>(HttpStatus.OK, "success", responseDtoList);
 
         return new ResponseEntity<>(form,HttpStatus.OK);
     }
 
     @GetMapping("/home")
-    public ResponseEntity<PostResponse<List<PostResponseDto>>> getRecommendedPosts() {
+    public ResponseEntity<PostResponse<List<PostResponseDto>>> RecommendedPosts() {
         List<Post> posts = postService.getRecommendedPosts();
-        List<PostResponseDto> responseDtos = posts.stream()
+        List<PostResponseDto> postResponseDtos = posts.stream()
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok().body(PostResponse.<List<PostResponseDto>>builder()
-                .StatusCode(HttpStatus.OK.value())
-                .message("전체 게시글을 추천 순으로 조회합니다.")
-                .date(responseDtos)
-                .build());
+
+        return ResponseEntity.ok().body(
+                PostResponse.<List<PostResponseDto>>builder()
+                        .StatusCode(HttpStatus.OK.value())
+                        .message("추천 순으로 전체 게시글이 조회되었습니다.")
+                        .date(postResponseDtos)
+                        .build()
+        );
     }
 
     @GetMapping("/{id}")
@@ -81,14 +80,31 @@ public class PostController {
         try {
             Post post = postService.getPostById(id);
             PostResponseDto postResponseDto = new PostResponseDto(post);
-            return ResponseEntity.ok().body(PostResponse.<PostResponseDto>builder()
-                    .StatusCode(HttpStatus.OK.value())
-                    .message("선택한 게시글을 조회합니다.")
-                    .date(postResponseDto)
-                    .build());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
 
+            return ResponseEntity.ok().body(
+                    PostResponse.<PostResponseDto>builder()
+                            .StatusCode(HttpStatus.OK.value())
+                            .message("선택한 게시글이 조회되었습니다.")
+                            .date(postResponseDto)
+                            .build()
+            );
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(
+                            PostResponse.<PostResponseDto>builder()
+                                    .StatusCode(HttpStatus.NOT_FOUND.value())
+                                    .message("해당 ID에 대한 게시글을 찾을 수 없습니다.")
+                                    .build()
+                    );
+        }
     }
+
+
 }
+
+
+
+
+
+
+
