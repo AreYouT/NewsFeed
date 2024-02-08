@@ -1,12 +1,16 @@
 package com.sparta.newsfeed.entity;
 
 
+import com.sparta.newsfeed.dto.PostRequestDto;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "posts")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends Timestamped{
 
     @Id
@@ -33,11 +37,12 @@ public class Post extends Timestamped{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Post(String category, String title, String contents, User user) {
-        this.category = category;
-        this.title = title;
-        this.contents = contents;
+    public Post(PostRequestDto requestDto, User user) {
+        this.category = requestDto.getCategory();
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
         this.user = user;
     }
+
 
 }

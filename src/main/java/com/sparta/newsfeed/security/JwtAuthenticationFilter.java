@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.newsfeed.dto.LoginRequestDto;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
-        setFilterProcessesUrl("/api/user/login");
+        setFilterProcessesUrl("/api/users/login");
     }
 
     @Override
