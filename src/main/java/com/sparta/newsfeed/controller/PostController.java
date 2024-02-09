@@ -4,18 +4,14 @@ import com.sparta.newsfeed.dto.PostRequestDto;
 import com.sparta.newsfeed.dto.PostResponseDto;
 import com.sparta.newsfeed.dto.ResponseDto;
 import com.sparta.newsfeed.entity.Post;
-import com.sparta.newsfeed.response.PostResponse;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
