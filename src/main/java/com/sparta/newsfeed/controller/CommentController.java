@@ -11,11 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -30,7 +26,7 @@ public class CommentController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody CommentRequestDto requestDto,
             @PathVariable Long post_id
-            ){
+    ) {
 
         return ResponseEntity.ok()
                 .body(ResponseDto.<CommentResponseDto>builder()
@@ -46,7 +42,7 @@ public class CommentController {
             @Valid @RequestBody CommentRequestDto requestDto,
             @PathVariable Long post_id,
             @PathVariable Long comment_id
-    ){
+    ) {
 
         return ResponseEntity.ok()
                 .body(ResponseDto.<CommentResponseDto>builder()
@@ -61,7 +57,7 @@ public class CommentController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable Long post_id,
             @PathVariable Long comment_id
-    ){
+    ) {
 
         commentService.deleteComment(userDetails.getUser(), post_id, comment_id);
 
