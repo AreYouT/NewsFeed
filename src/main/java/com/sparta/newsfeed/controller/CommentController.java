@@ -11,7 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -32,7 +36,39 @@ public class CommentController {
                 .body(ResponseDto.<CommentResponseDto>builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("댓글 작성 성공")
-                        .data(commentService.createComment(userDetails.getUser(), post_id, requestDto))
+                        .data(commentService.createComment(userDetails.getUser(), requestDto, post_id))
+                        .build());
+    }
+
+    @PatchMapping("/{post_id}/comment/{comment_id}/update")
+    public ResponseEntity<ResponseDto<CommentResponseDto>> updateComment(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Valid @RequestBody CommentRequestDto requestDto,
+            @PathVariable Long post_id,
+            @PathVariable Long comment_id
+    ){
+
+        return ResponseEntity.ok()
+                .body(ResponseDto.<CommentResponseDto>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("댓글 수정 성공")
+                        .data(commentService.updateComment(userDetails.getUser(), requestDto, post_id, comment_id))
+                        .build());
+    }
+
+    @DeleteMapping("/{post_id}/comment/{comment_id}/delete")
+    public ResponseEntity<ResponseDto<Void>> deleteComment(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable Long post_id,
+            @PathVariable Long comment_id
+    ){
+
+        commentService.deleteComment(userDetails.getUser(), post_id, comment_id);
+
+        return ResponseEntity.ok()
+                .body(ResponseDto.<Void>builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("댓글 삭제 성공")
                         .build());
     }
 }

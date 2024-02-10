@@ -20,7 +20,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     public PostResponseDto savePost(PostRequestDto requestDto, User user) {
-        Post post = new Post();
+        Post post = new Post(requestDto, user);
         postRepository.save(post);
         return new PostResponseDto(post);
     }
