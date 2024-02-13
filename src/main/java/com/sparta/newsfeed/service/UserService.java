@@ -50,7 +50,7 @@ public class UserService {
     }
 
     @Transactional
-    public void userUpdate(UserDetailsImpl userDetails, UserInfoRequestDto requestDto){
+    public void userUpdate(UserDetailsImpl userDetails, RegisterRequestDto requestDto){
         User user = userDetails.getUser();
 
         User findUser = userRepository.findByUsername(user.getUsername()).orElseThrow(

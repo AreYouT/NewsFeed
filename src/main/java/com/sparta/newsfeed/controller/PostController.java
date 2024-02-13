@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -124,6 +123,21 @@ public class PostController {
                 ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("선택한 게시글이 삭제되었습니다.")
+                        .build()
+        );
+    }
+
+    @PostMapping("{postId}/like")
+    public ResponseEntity<ResponseDto> likePost(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        postService.likePost(postId, userDetails.getUser());
+
+        return ResponseEntity.ok().body(
+                ResponseDto.builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("게시글에 좋아요를 했습니다.")
                         .build()
         );
     }
