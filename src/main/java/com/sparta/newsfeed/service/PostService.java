@@ -3,6 +3,8 @@ package com.sparta.newsfeed.service;
 import com.sparta.newsfeed.dto.request.PostRequestDto;
 import com.sparta.newsfeed.dto.request.UpdateRequestDto;
 import com.sparta.newsfeed.dto.response.PostListResponseDto;
+import com.sparta.newsfeed.dto.response.PostResponseDto;
+import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.PostLike;
 import com.sparta.newsfeed.entity.User;
@@ -10,6 +12,8 @@ import com.sparta.newsfeed.repository.PostLikeRepository;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,10 +46,16 @@ public class PostService {
                 .toList();
     }
 
+
     @Transactional(readOnly = true)
-    public List<Post> getRecommendedPosts() {
-        return postRepository.findAll(Sort.by("likeCount").descending());
+    public List<PostResponseDto> getRecommendedPostResponseDtos() {
+        List<Post> posts = postRepository.findAll(Sort.by("likeCount").descending());
+        return posts.stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
     }
+
+
 
     // 게시글 수정
     @Transactional
