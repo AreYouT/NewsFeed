@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.service;
 
 import com.sparta.newsfeed.dto.request.CommentRequestDto;
+import com.sparta.newsfeed.dto.response.CommentResponseDto;
 import com.sparta.newsfeed.entity.Comment;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.User;
@@ -10,6 +11,9 @@ import com.sparta.newsfeed.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +29,20 @@ public class CommentService {
         Post findPost = findPostById(postId);
 
         Comment comment = new Comment(requestDto, findUser, findPost);
+
+        commentRepository.save(comment);
+    }
+
+    public List<CommentResponseDto> getComments(Long post_id){
+        List<Comment> comments = commentRepository.findAllByPostId(post_id);
+        List<CommentResponseDto> commentResponseDtoList = new LinkedList<>();
+
+        for (Comment comment : comments) {
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment, comment.getUser());
+            commentResponseDtoList.add(commentResponseDto);
+        }
+
+        return commentResponseDtoList;
     }
 
     @Transactional
@@ -35,7 +53,7 @@ public class CommentService {
 
         Comment findComment = findCommentById(commentId);
 
-        findComment.update(requestDto, findUser, findPost);
+        findComment.update(requestDto);
     }
 
     public void deleteComment(User user, Long postId, Long commentId) {
@@ -65,6 +83,4 @@ public class CommentService {
                 () -> new IllegalArgumentException("댓글을 찾지 못했습니다.")
         );
     }
-
-
 }
