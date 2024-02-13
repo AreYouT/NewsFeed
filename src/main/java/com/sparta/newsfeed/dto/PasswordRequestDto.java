@@ -1,12 +1,15 @@
 package com.sparta.newsfeed.dto;
 
-import jakarta.validation.constraints.NotBlank;
+
+import jakarta.validation.constraints.Pattern;
+
 import lombok.Getter;
 
 @Getter
 public class PasswordRequestDto {
-    @NotBlank
+
+    @Pattern(regexp="^[a-zA-Z0-9]{8,15}$") // 비밀번호 대소문자 및 숫자 8~15 문자
     private String checkPassword;
-    @NotBlank
+    @Pattern(regexp="^[a-zA-Z0-9]{8,15}$") // 비밀번호 대소문자 및 숫자 8~15 문자
     private String newPassword;
 }

@@ -1,6 +1,5 @@
 package com.sparta.newsfeed.service;
 
-import com.sparta.newsfeed.dto.PasswordRequestDto;
 import com.sparta.newsfeed.dto.RegisterRequestDto;
 import com.sparta.newsfeed.dto.UserInfoRequestDto;
 import com.sparta.newsfeed.dto.UserInfoResponseDto;
@@ -8,7 +7,6 @@ import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.UserRepository;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Slf4j
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
 
 
     @Transactional
@@ -65,6 +64,7 @@ public class UserService {
         }
 
         findUser.userInfoUpdate(requestDto);
+
 
         return new UserInfoResponseDto(findUser);
     }
