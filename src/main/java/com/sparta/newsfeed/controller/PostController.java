@@ -31,17 +31,17 @@ public class PostController {
             @RequestBody PostRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
+        postService.savePost(requestDto, userDetails.getUser());
 
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
-                        .message("success")
-                        .data(postService.savePost(requestDto, userDetails.getUser()))
+                        .message("게시글이 정상적으로 등록되었습니다.")
                         .build());
 
     }
 
-    @GetMapping("/{category}")
+    @GetMapping("/mbti/{category}")
     public ResponseEntity<ResponseDto> findByCategoryNameToList(
             @PathVariable String category
     ){
@@ -69,8 +69,10 @@ public class PostController {
         );
     }
 
-    @GetMapping("/{category}/{id}")
-    public ResponseEntity<ResponseDto> getPostById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDto> getPostById(
+            @PathVariable Long id
+    ) {
         try {
             Post post = postService.getPostById(id);
             PostResponseDto postResponseDto = new PostResponseDto(post);
@@ -95,9 +97,11 @@ public class PostController {
 
     // 게시글 수정
     @PutMapping("/{postId}")
-    public ResponseEntity<ResponseDto> updatePost(@PathVariable Long postId,
-                                                   @RequestBody UpdateRequestDto dto,
-                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ResponseDto> updatePost(
+            @PathVariable Long postId,
+            @RequestBody UpdateRequestDto dto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         Post post = postService.updatePost(postId, dto,userDetails.getUser());
 
         return ResponseEntity.ok().body(
@@ -109,9 +113,11 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<ResponseDto> deletePost(@PathVariable Long postId,
-                                                   @RequestBody PostRequestDto dto,
-                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ResponseDto> deletePost(
+            @PathVariable Long postId,
+            @RequestBody PostRequestDto dto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         postService.deletePost(postId, userDetails.getUser());
 
         return ResponseEntity.ok().body(

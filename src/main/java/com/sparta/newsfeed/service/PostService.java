@@ -3,12 +3,14 @@ package com.sparta.newsfeed.service;
 import com.sparta.newsfeed.dto.request.PostRequestDto;
 import com.sparta.newsfeed.dto.request.UpdateRequestDto;
 import com.sparta.newsfeed.dto.response.PostResponseDto;
+import com.sparta.newsfeed.dto.response.PostListResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -21,27 +23,30 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public PostResponseDto savePost(PostRequestDto requestDto, User user) {
-        Post post = new Post(requestDto, user);
-        postRepository.save(post);
-        return new PostResponseDto(post);
+    @Transactional
+    public void savePost(PostRequestDto requestDto, User user) {
+
+        postRepository.save(new Post(requestDto,user));
+
     }
 
-    public List<PostResponseDto> findByCategoryNameToList(String category) {
+    @Transactional(readOnly = true)
+    public List<PostListResponseDto> findByCategoryNameToList(String category) {
         return postRepository.findByCategory(category)
                 .stream()
-                .map(PostResponseDto::new)
-                .sorted(Comparator.comparing(PostResponseDto::getModifiedAt).reversed())
+                .map(PostListResponseDto::new)
+                .sorted(Comparator.comparing(PostListResponseDto::getModifiedAt).reversed())
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<Post> getRecommendedPosts() {
         return postRepository.findAll(Sort.by("likeCount").descending());
     }
 
     // 게시글 수정
+    @Transactional
     public Post updatePost(Long postId, UpdateRequestDto dto, User user) {
-//        Post post = checkPWAndGetToDo(postId, user.getPassword());
         Post post = getPostById(postId);
 
         checkUserID(user,post);
@@ -51,6 +56,7 @@ public class PostService {
     }
 
     // 게시글 삭제
+    @Transactional
     public void deletePost(Long postId, User user) {
         Post post = getPostById(postId);
 

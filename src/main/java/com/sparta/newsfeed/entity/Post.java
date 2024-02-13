@@ -37,6 +37,7 @@ public class Post extends Timestamped{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+
     public Post(PostRequestDto requestDto, User user) {
         this.category = requestDto.getCategory();
         this.title = requestDto.getTitle();

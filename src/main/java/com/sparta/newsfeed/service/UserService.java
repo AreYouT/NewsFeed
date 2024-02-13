@@ -3,7 +3,6 @@ package com.sparta.newsfeed.service;
 import com.sparta.newsfeed.dto.request.PasswordRequestDto;
 import com.sparta.newsfeed.dto.request.RegisterRequestDto;
 import com.sparta.newsfeed.dto.request.UserInfoRequestDto;
-import com.sparta.newsfeed.dto.response.UserInfoResponseDto;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.UserRepository;
 import com.sparta.newsfeed.security.UserDetailsImpl;
@@ -23,6 +22,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+
+
+    @Transactional
     public void register(RegisterRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
