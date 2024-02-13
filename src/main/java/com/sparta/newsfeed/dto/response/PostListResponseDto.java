@@ -6,13 +6,13 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+
 @Getter
 public class PostListResponseDto {
 
     private Long id;
 
     private String title;
-
 
 
     private Long likeCount;
@@ -27,6 +27,7 @@ public class PostListResponseDto {
 
     private LocalDateTime modifiedAt;
 
+
     public PostListResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
@@ -36,5 +37,6 @@ public class PostListResponseDto {
         this.username = post.getUser().getUsername();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
+
     }
 }

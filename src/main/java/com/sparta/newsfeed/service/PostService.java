@@ -2,7 +2,6 @@ package com.sparta.newsfeed.service;
 
 import com.sparta.newsfeed.dto.request.PostRequestDto;
 import com.sparta.newsfeed.dto.request.UpdateRequestDto;
-import com.sparta.newsfeed.dto.response.PostResponseDto;
 import com.sparta.newsfeed.dto.response.PostListResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.PostLike;
