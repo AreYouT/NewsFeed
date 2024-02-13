@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.controller;
 
 import com.sparta.newsfeed.dto.request.PostRequestDto;
+import com.sparta.newsfeed.dto.request.UpdateRequestDto;
 import com.sparta.newsfeed.dto.response.PostResponseDto;
 import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.entity.Post;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -91,11 +93,33 @@ public class PostController {
                     );
         }
     }
+
+    // 게시글 수정
+    @PutMapping("/{postId}")
+    public ResponseEntity<ResponseDto> updatePost(@PathVariable Long postId,
+                                                   @RequestBody UpdateRequestDto dto,
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Post post = postService.updatePost(postId, dto,userDetails.getUser());
+
+        return ResponseEntity.ok().body(
+                ResponseDto.builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("선택한 게시글이 수정되었습니다.")
+                        .build()
+        );
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<ResponseDto> deletePost(@PathVariable Long postId,
+                                                   @RequestBody PostRequestDto dto,
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        postService.deletePost(postId, userDetails.getUser());
+
+        return ResponseEntity.ok().body(
+                ResponseDto.builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("선택한 게시글이 삭제되었습니다.")
+                        .build()
+        );
+    }
 }
-
-
-
-
-
-
-
