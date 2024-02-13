@@ -1,7 +1,6 @@
 package com.sparta.newsfeed.controller;
 
 import com.sparta.newsfeed.dto.request.CommentRequestDto;
-import com.sparta.newsfeed.dto.response.CommentResponseDto;
 import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.CommentService;
@@ -12,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
