@@ -1,7 +1,6 @@
 package com.sparta.newsfeed.service;
 
 import com.sparta.newsfeed.dto.request.CommentRequestDto;
-import com.sparta.newsfeed.dto.response.CommentResponseDto;
 import com.sparta.newsfeed.entity.Comment;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.User;
