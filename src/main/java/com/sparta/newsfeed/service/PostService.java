@@ -89,7 +89,7 @@ public class PostService {
 
     //게시글 조회수 증가
     @Transactional
-    public int updateView(Long id) {
-        return postRepository.updateView(id);
+    public void updateView(Long id) {
+        postRepository.updateView(id);
     }
 }
