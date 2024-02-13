@@ -30,7 +30,7 @@ public class CommentController {
         commentService.createComment(userDetails.getUser(), requestDto, post_id);
 
         return ResponseEntity.ok()
-                .body(ResponseDto.<CommentResponseDto>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("댓글 작성 성공")
                         .build());
@@ -62,7 +62,7 @@ public class CommentController {
         commentService.deleteComment(userDetails.getUser(), post_id, comment_id);
 
         return ResponseEntity.ok()
-                .body(ResponseDto.<Void>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("댓글 삭제 성공")
                         .build());
