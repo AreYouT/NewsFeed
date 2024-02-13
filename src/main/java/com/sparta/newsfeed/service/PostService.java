@@ -86,4 +86,10 @@ public class PostService {
         if(user.getId() != null && !Objects.equals(post.getUser().getId(), user.getId()))
             throw new IllegalArgumentException();
     }
+
+    //게시글 조회수 증가
+    @Transactional
+    public int updateView(Long id) {
+        return postRepository.updateView(id);
+    }
 }
