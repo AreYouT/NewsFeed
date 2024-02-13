@@ -1,6 +1,10 @@
 package com.sparta.newsfeed.controller;
 
-import com.sparta.newsfeed.dto.*;
+import com.sparta.newsfeed.dto.request.PasswordRequestDto;
+import com.sparta.newsfeed.dto.request.RegisterRequestDto;
+import com.sparta.newsfeed.dto.request.UserInfoRequestDto;
+import com.sparta.newsfeed.dto.response.ResponseDto;
+import com.sparta.newsfeed.dto.response.UserInfoResponseDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
 import jakarta.validation.Valid;
@@ -25,7 +29,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto<String>> register(
+    public ResponseEntity<ResponseDto> register(
             @Valid @RequestBody RegisterRequestDto requestDto,
             BindingResult bindingResult) {
 
@@ -50,36 +54,34 @@ public class UserController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ResponseDto<UserInfoResponseDto>> userUpdate(
+    public ResponseEntity<ResponseDto> userUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody UserInfoRequestDto requestDto){
 
         log.info("회원정보 수정");
 
-        UserInfoResponseDto userInfoResponseDto = userService.userUpdate(userDetails, requestDto);
+        userService.userUpdate(userDetails, requestDto);
 
         return ResponseEntity.ok()
                 .body(ResponseDto.<UserInfoResponseDto>builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("회원정보 수정 성공")
-                        .data(userInfoResponseDto)
                         .build());
     }
 
     @PatchMapping("/update/password")
-    public ResponseEntity<ResponseDto<UserInfoResponseDto>> passwordUpdate(
+    public ResponseEntity<ResponseDto> passwordUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody PasswordRequestDto requestDto){
 
         log.info("비밀번호 변경");
 
-        UserInfoResponseDto userInfoResponseDto = userService.passwordUpdate(userDetails, requestDto);
+        userService.passwordUpdate(userDetails, requestDto);
 
         return ResponseEntity.ok()
                 .body(ResponseDto.<UserInfoResponseDto>builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("회원정보 수정 성공")
-                        .data(userInfoResponseDto)
                         .build());
     }
 }

@@ -1,20 +1,21 @@
 package com.sparta.newsfeed.service;
 
-import com.sparta.newsfeed.dto.PasswordRequestDto;
-import com.sparta.newsfeed.dto.RegisterRequestDto;
-import com.sparta.newsfeed.dto.UserInfoRequestDto;
-import com.sparta.newsfeed.dto.UserInfoResponseDto;
+import com.sparta.newsfeed.dto.request.PasswordRequestDto;
+import com.sparta.newsfeed.dto.request.RegisterRequestDto;
+import com.sparta.newsfeed.dto.request.UserInfoRequestDto;
+import com.sparta.newsfeed.dto.response.UserInfoResponseDto;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.UserRepository;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -50,7 +51,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserInfoResponseDto userUpdate(UserDetailsImpl userDetails, UserInfoRequestDto requestDto){
+    public void userUpdate(UserDetailsImpl userDetails, UserInfoRequestDto requestDto){
         User user = userDetails.getUser();
 
         User findUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
@@ -62,13 +63,10 @@ public class UserService {
         }
 
         findUser.userInfoUpdate(requestDto);
-
-
-        return new UserInfoResponseDto(findUser);
     }
 
     @Transactional
-    public UserInfoResponseDto passwordUpdate(UserDetailsImpl userDetails, PasswordRequestDto requestDto) {
+    public void passwordUpdate(UserDetailsImpl userDetails, PasswordRequestDto requestDto) {
         User user = userDetails.getUser();
 
         User findUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
@@ -84,7 +82,5 @@ public class UserService {
         }
 
         findUser.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
-
-        return new UserInfoResponseDto(findUser);
     }
 }

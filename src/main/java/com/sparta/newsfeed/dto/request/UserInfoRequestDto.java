@@ -1,4 +1,4 @@
-package com.sparta.newsfeed.dto;
+package com.sparta.newsfeed.dto.request;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;

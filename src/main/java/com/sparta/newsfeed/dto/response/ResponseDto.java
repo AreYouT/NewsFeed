@@ -1,4 +1,4 @@
-package com.sparta.newsfeed.dto;
+package com.sparta.newsfeed.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class ResponseDto<T> {
+public class ResponseDto {
     private int httpStatus;
     private String message;
-    private T data;
+    private Object data;
 }
