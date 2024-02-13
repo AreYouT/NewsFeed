@@ -74,6 +74,7 @@ public class PostController {
     ) {
         try {
             Post post = postService.getPostById(id);
+            postService.updateView(id);
             PostResponseDto postResponseDto = new PostResponseDto(post);
 
             return ResponseEntity.ok().body(
