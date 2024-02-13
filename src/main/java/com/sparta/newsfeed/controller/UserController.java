@@ -31,16 +31,8 @@ public class UserController {
             @Valid @RequestBody RegisterRequestDto requestDto,
             BindingResult bindingResult) {
 
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if(!fieldErrors.isEmpty()) {
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
-            }
-            return ResponseEntity.ok()
-                    .body(ResponseDto.builder()
-                            .httpStatus(HttpStatus.BAD_REQUEST.value())
-                            .message("회원가입에 실패했습니다.")
-                            .build());
+        if(bindingResult.hasErrors()){
+            return handleValidationResult(bindingResult);
         }
 
         userService.register(requestDto);
@@ -54,9 +46,14 @@ public class UserController {
     @PatchMapping("/update")
     public ResponseEntity<ResponseDto> userUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestBody RegisterRequestDto requestDto){
+            @Valid @RequestBody RegisterRequestDto requestDto,
+            BindingResult bindingResult){
 
         log.info("회원정보 수정");
+
+        if(bindingResult.hasErrors()){
+            return handleValidationResult(bindingResult);
+        }
 
         userService.userUpdate(userDetails, requestDto);
 
@@ -70,9 +67,14 @@ public class UserController {
     @PatchMapping("/update/password")
     public ResponseEntity<ResponseDto> passwordUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestBody PasswordRequestDto requestDto){
+            @Valid @RequestBody PasswordRequestDto requestDto,
+            BindingResult bindingResult){
 
         log.info("비밀번호 변경");
+
+        if(bindingResult.hasErrors()){
+            return handleValidationResult(bindingResult);
+        }
 
         userService.passwordUpdate(userDetails, requestDto);
 
@@ -81,5 +83,17 @@ public class UserController {
                         .httpStatus(HttpStatus.OK.value())
                         .message("회원정보 수정 성공")
                         .build());
+    }
+
+    private ResponseEntity<ResponseDto> handleValidationResult(BindingResult bindingResult) {
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
+            return ResponseEntity.badRequest()
+                    .body(ResponseDto.builder()
+                            .httpStatus(HttpStatus.BAD_REQUEST.value())
+                            .message(fieldError.getDefaultMessage())
+                            .build());
+        }
+        throw new IllegalArgumentException("예기치 못한 오류가 발생했습니다.");
     }
 }
