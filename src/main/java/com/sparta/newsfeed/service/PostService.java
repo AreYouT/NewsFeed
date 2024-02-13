@@ -51,7 +51,7 @@ public class PostService {
     }
 
     // 게시글 삭제
-    public void deleteToDo(Long postId, User user) {
+    public void deletePost(Long postId, User user) {
         Post post = getPostById(postId);
 
         checkUserID(user,post);
