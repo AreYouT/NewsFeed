@@ -27,6 +27,7 @@ public class CommentController {
             @Valid @RequestBody CommentRequestDto requestDto,
             @PathVariable Long post_id
     ) {
+        commentService.createComment(userDetails.getUser(), requestDto, post_id);
 
         return ResponseEntity.ok()
                 .body(ResponseDto.<CommentResponseDto>builder()
@@ -42,6 +43,7 @@ public class CommentController {
             @PathVariable Long post_id,
             @PathVariable Long comment_id
     ) {
+        commentService.updateComment(userDetails.getUser(), requestDto, post_id, comment_id);
 
         return ResponseEntity.ok()
                 .body(ResponseDto.<CommentResponseDto>builder()
