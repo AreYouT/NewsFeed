@@ -67,12 +67,14 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    // 게시글 좋아요
+    @Transactional
     public void likePost(Long postId, User user) {
         Post post = getPostById(postId);
         if(postLikeRepository.existsByUserAndPost(user, post)) {
             throw new IllegalArgumentException("이미 게시글에 좋아요를 했습니다.");
         }
-
+        post.addLike();
         postLikeRepository.save(new PostLike(user, post));
     }
 

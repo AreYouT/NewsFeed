@@ -25,9 +25,4 @@ public class PostLike {
         this.user = user;
         this.post = post;
     }
-
-    public void likePost(User user, Post post) {
-        this.user = user;
-        this.post = post;
-    }
 }

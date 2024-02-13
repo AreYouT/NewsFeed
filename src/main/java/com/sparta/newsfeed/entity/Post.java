@@ -50,4 +50,8 @@ public class Post extends Timestamped{
         this.title = dto.getTitle();
         this.contents = dto.getContents();
     }
+
+    public void addLike(){
+        this.likeCount++;
+    }
 }
