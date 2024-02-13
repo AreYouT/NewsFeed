@@ -1,13 +1,15 @@
 package com.sparta.newsfeed.entity;
 
 
-import com.sparta.newsfeed.dto.PostRequestDto;
+import com.sparta.newsfeed.dto.request.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "posts")
+@NoArgsConstructor
 public class Post extends Timestamped{
 
     @Id
@@ -23,10 +25,10 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     private String contents;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long likeCount = 0L;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long viewCount = 0L;
 
 
@@ -34,16 +36,10 @@ public class Post extends Timestamped{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Post(String category, String title, String contents, User user) {
-        this.category = category;
-        this.title = title;
-        this.contents = contents;
+    public Post(PostRequestDto requestDto, User user) {
+        this.category = requestDto.getCategory();
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
         this.user = user;
     }
-
-    public Post() {
-
-    }
-
-
 }

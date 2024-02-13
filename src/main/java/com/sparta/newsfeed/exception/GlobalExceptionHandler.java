@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
-    protected ResponseEntity<ExceptionDto> handlePasswordException(IllegalArgumentException e){
+    protected ResponseEntity<ExceptionDto> handle(IllegalArgumentException e){
         return ResponseEntity.badRequest()
                 .body(new ExceptionDto(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST,
                         e.getMessage()));

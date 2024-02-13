@@ -1,4 +1,4 @@
-package com.sparta.newsfeed.dto;
+package com.sparta.newsfeed.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 @Setter
 @Getter
 @Builder
-public class ResponseDto<T> {
+public class ResponseDto {
     private int httpStatus;
     private String message;
-    private T data;
+    private Object data;
 }
