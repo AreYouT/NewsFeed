@@ -1,4 +1,4 @@
-package com.sparta.newsfeed.dto;
+package com.sparta.newsfeed.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

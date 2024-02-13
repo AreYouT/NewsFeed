@@ -1,7 +1,7 @@
 package com.sparta.newsfeed.entity;
 
 
-import com.sparta.newsfeed.dto.PostRequestDto;
+import com.sparta.newsfeed.dto.request.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

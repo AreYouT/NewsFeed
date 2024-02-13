@@ -1,4 +1,4 @@
-package com.sparta.newsfeed.dto;
+package com.sparta.newsfeed.dto.response;
 
 import com.sparta.newsfeed.entity.Comment;
 import lombok.AllArgsConstructor;

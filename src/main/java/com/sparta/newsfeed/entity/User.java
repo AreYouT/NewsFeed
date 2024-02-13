@@ -1,6 +1,6 @@
 package com.sparta.newsfeed.entity;
 
-import com.sparta.newsfeed.dto.UserInfoRequestDto;
+import com.sparta.newsfeed.dto.request.UserInfoRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,13 +33,13 @@ public class User {
         this.mbti = mbti;
     }
 
-    public void userInfoUpdate(UserInfoRequestDto requestDto){
+    public void userInfoUpdate(UserInfoRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
         this.mbti = requestDto.getMbti();
     }
 
-    public void updatePassword(String password){
+    public void updatePassword(String password) {
         this.password = password;
     }
 }

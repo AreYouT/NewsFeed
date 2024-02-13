@@ -1,7 +1,7 @@
 package com.sparta.newsfeed.service;
 
-import com.sparta.newsfeed.dto.CommentRequestDto;
-import com.sparta.newsfeed.dto.CommentResponseDto;
+import com.sparta.newsfeed.dto.request.CommentRequestDto;
+import com.sparta.newsfeed.dto.response.CommentResponseDto;
 import com.sparta.newsfeed.entity.Comment;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.User;
@@ -20,18 +20,16 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public CommentResponseDto createComment(User user,  CommentRequestDto requestDto, Long postId){
+    public void createComment(User user,  CommentRequestDto requestDto, Long postId){
         User findUser = findUserByUsername(user);
 
         Post findPost = findPostById(postId);
 
         Comment comment = new Comment(requestDto, findUser, findPost);
-
-        return new CommentResponseDto(commentRepository.save(comment));
     }
 
     @Transactional
-    public CommentResponseDto updateComment(User user, CommentRequestDto requestDto, Long postId, Long commentId) {
+    public void updateComment(User user, CommentRequestDto requestDto, Long postId, Long commentId) {
         User findUser = findUserByUsername(user);
 
         Post findPost = findPostById(postId);
@@ -39,8 +37,6 @@ public class CommentService {
         Comment findComment = findCommentById(commentId);
 
         findComment.update(requestDto, findUser, findPost);
-
-        return new CommentResponseDto(findComment);
     }
 
     public void deleteComment(User user, Long postId, Long commentId) {

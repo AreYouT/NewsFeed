@@ -1,8 +1,8 @@
 package com.sparta.newsfeed.controller;
 
-import com.sparta.newsfeed.dto.PostRequestDto;
-import com.sparta.newsfeed.dto.PostResponseDto;
-import com.sparta.newsfeed.dto.ResponseDto;
+import com.sparta.newsfeed.dto.request.PostRequestDto;
+import com.sparta.newsfeed.dto.response.PostResponseDto;
+import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.PostService;
@@ -25,7 +25,7 @@ public class PostController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<ResponseDto<PostResponseDto>> savePost(
+    public ResponseEntity<ResponseDto> savePost(
             @RequestBody PostRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
@@ -40,7 +40,7 @@ public class PostController {
     }
 
     @GetMapping("/{category}")
-    public ResponseEntity<ResponseDto<List<PostResponseDto>>> findByCategoryNameToList(
+    public ResponseEntity<ResponseDto> findByCategoryNameToList(
             @PathVariable String category
     ){
         return ResponseEntity.ok()
@@ -52,7 +52,7 @@ public class PostController {
     }
 
     @GetMapping("/home")
-    public ResponseEntity<ResponseDto<List<PostResponseDto>>> RecommendedPosts() {
+    public ResponseEntity<ResponseDto> RecommendedPosts() {
         List<Post> posts = postService.getRecommendedPosts();
         List<PostResponseDto> postResponseDtos = posts.stream()
                 .map(PostResponseDto::new)
@@ -68,7 +68,7 @@ public class PostController {
     }
 
     @GetMapping("/{category}/{id}")
-    public ResponseEntity<ResponseDto<PostResponseDto>> getPostById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto> getPostById(@PathVariable Long id) {
         try {
             Post post = postService.getPostById(id);
             PostResponseDto postResponseDto = new PostResponseDto(post);
