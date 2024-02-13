@@ -71,7 +71,8 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> getPostById(
-            @PathVariable Long id) {
+            @PathVariable Long id
+    ) {
         try {
             Post post = postService.getPostById(id);
             PostResponseDto postResponseDto = new PostResponseDto(post);
@@ -96,9 +97,11 @@ public class PostController {
 
     // 게시글 수정
     @PutMapping("/{postId}")
-    public ResponseEntity<ResponseDto> updatePost(@PathVariable Long postId,
-                                                   @RequestBody UpdateRequestDto dto,
-                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ResponseDto> updatePost(
+            @PathVariable Long postId,
+            @RequestBody UpdateRequestDto dto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         Post post = postService.updatePost(postId, dto,userDetails.getUser());
 
         return ResponseEntity.ok().body(
@@ -110,9 +113,11 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<ResponseDto> deletePost(@PathVariable Long postId,
-                                                   @RequestBody PostRequestDto dto,
-                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ResponseDto> deletePost(
+            @PathVariable Long postId,
+            @RequestBody PostRequestDto dto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         postService.deletePost(postId, userDetails.getUser());
 
         return ResponseEntity.ok().body(
