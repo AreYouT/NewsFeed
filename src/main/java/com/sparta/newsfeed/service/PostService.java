@@ -2,10 +2,11 @@ package com.sparta.newsfeed.service;
 
 import com.sparta.newsfeed.dto.request.PostRequestDto;
 import com.sparta.newsfeed.dto.request.UpdateRequestDto;
-import com.sparta.newsfeed.dto.response.PostResponseDto;
 import com.sparta.newsfeed.dto.response.PostListResponseDto;
 import com.sparta.newsfeed.entity.Post;
+import com.sparta.newsfeed.entity.PostLike;
 import com.sparta.newsfeed.entity.User;
+import com.sparta.newsfeed.repository.PostLikeRepository;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -14,14 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
 
     @Transactional
     public void savePost(PostRequestDto requestDto, User user) {
@@ -63,6 +65,15 @@ public class PostService {
         checkUserID(user,post);
 
         postRepository.delete(post);
+    }
+
+    public void likePost(Long postId, User user) {
+        Post post = getPostById(postId);
+        if(postLikeRepository.existsByUserAndPost(user, post)) {
+            throw new IllegalArgumentException("이미 게시글에 좋아요를 했습니다.");
+        }
+
+        postLikeRepository.save(new PostLike(user, post));
     }
 
     public Post getPostById(Long id) {
