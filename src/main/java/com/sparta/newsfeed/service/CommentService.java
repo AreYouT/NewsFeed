@@ -38,14 +38,8 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentResponseDto> getComments(Long post_id){
         List<Comment> comments = commentRepository.findAllByPostId(post_id);
-        List<CommentResponseDto> commentResponseDtoList = new LinkedList<>();
 
-        for (Comment comment : comments) {
-            CommentResponseDto commentResponseDto = new CommentResponseDto(comment, comment.getUser());
-            commentResponseDtoList.add(commentResponseDto);
-        }
-
-        return commentResponseDtoList;
+        return comments.stream().map(comment -> new CommentResponseDto(comment, comment.getUser())).toList();
     }
 
     @Transactional
