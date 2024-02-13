@@ -30,13 +30,13 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.mbti = mbti;
+        this.mbti = mbti.toUpperCase();
     }
 
     public void userInfoUpdate(RegisterRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
-        this.mbti = requestDto.getMbti();
+        this.mbti = requestDto.getMbti().toUpperCase();
     }
 
     public void updatePassword(String password) {
