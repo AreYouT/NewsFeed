@@ -31,7 +31,7 @@ public class PostController {
     ){
 
         return ResponseEntity.ok()
-                .body(ResponseDto.<PostResponseDto>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("success")
                         .data(postService.savePost(requestDto, userDetails.getUser()))
@@ -44,7 +44,7 @@ public class PostController {
             @PathVariable String category
     ){
         return ResponseEntity.ok()
-                .body(ResponseDto.<List<PostResponseDto>>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("success")
                         .data(postService.findByCategoryNameToList(category))
@@ -59,7 +59,7 @@ public class PostController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(
-                ResponseDto.<List<PostResponseDto>>builder()
+                ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("추천 순으로 전체 게시글이 조회되었습니다.")
                         .data(postResponseDtos)
@@ -74,7 +74,7 @@ public class PostController {
             PostResponseDto postResponseDto = new PostResponseDto(post);
 
             return ResponseEntity.ok().body(
-                    ResponseDto.<PostResponseDto>builder()
+                    ResponseDto.builder()
                             .httpStatus(HttpStatus.OK.value())
                             .message("선택한 게시글이 조회되었습니다.")
                             .data(postResponseDto)
@@ -83,15 +83,13 @@ public class PostController {
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(
-                            ResponseDto.<PostResponseDto>builder()
+                            ResponseDto.builder()
                                     .httpStatus(HttpStatus.NOT_FOUND.value())
                                     .message("해당 ID에 대한 게시글을 찾을 수 없습니다.")
                                     .build()
                     );
         }
     }
-
-
 }
 
 
