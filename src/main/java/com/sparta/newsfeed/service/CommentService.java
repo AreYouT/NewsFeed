@@ -23,6 +23,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void createComment(User user,  CommentRequestDto requestDto, Long postId){
         User findUser = findUserByUsername(user);
 
@@ -33,6 +34,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    @Transactional(readOnly = true)
     public List<CommentResponseDto> getComments(Long post_id){
         List<Comment> comments = commentRepository.findAllByPostId(post_id);
         List<CommentResponseDto> commentResponseDtoList = new LinkedList<>();
@@ -56,6 +58,7 @@ public class CommentService {
         findComment.update(requestDto);
     }
 
+    @Transactional
     public void deleteComment(User user, Long postId, Long commentId) {
         User findUser = findUserByUsername(user);
 
