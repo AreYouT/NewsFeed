@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -30,9 +32,22 @@ public class CommentController {
         commentService.createComment(userDetails.getUser(), requestDto, post_id);
 
         return ResponseEntity.ok()
-                .body(ResponseDto.<CommentResponseDto>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("댓글 작성 성공")
+                        .build());
+    }
+
+    @GetMapping("/{post_id}/comments")
+    public ResponseEntity<ResponseDto> getComments(
+            @PathVariable Long post_id
+    ){
+
+        return ResponseEntity.ok()
+                .body(ResponseDto.builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("댓글 목록 조회 성공")
+                        .data(commentService.getComments(post_id))
                         .build());
     }
 
@@ -62,7 +77,7 @@ public class CommentController {
         commentService.deleteComment(userDetails.getUser(), post_id, comment_id);
 
         return ResponseEntity.ok()
-                .body(ResponseDto.<Void>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("댓글 삭제 성공")
                         .build());
