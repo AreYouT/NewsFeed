@@ -28,7 +28,7 @@ public class UserService {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
         String email = requestDto.getEmail();
-        String mbti = requestDto.getMbti().toUpperCase();
+        String mbti = requestDto.getMbti();
 
         // 회원 중복 확인
         Optional<User> checkUsername = userRepository.findByUsername(username);
