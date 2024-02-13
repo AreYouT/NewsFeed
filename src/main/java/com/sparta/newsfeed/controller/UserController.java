@@ -39,7 +39,7 @@ public class UserController {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
             return ResponseEntity.ok()
-                    .body(ResponseDto.<String>builder()
+                    .body(ResponseDto.builder()
                             .httpStatus(HttpStatus.BAD_REQUEST.value())
                             .message("회원가입에 실패했습니다.")
                             .build());
@@ -47,7 +47,7 @@ public class UserController {
 
         userService.register(requestDto);
         return ResponseEntity.ok()
-                .body(ResponseDto.<String>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("회원가입에 성공하였습니다.")
                         .build());
@@ -63,7 +63,7 @@ public class UserController {
         userService.userUpdate(userDetails, requestDto);
 
         return ResponseEntity.ok()
-                .body(ResponseDto.<UserInfoResponseDto>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("회원정보 수정 성공")
                         .build());
@@ -79,7 +79,7 @@ public class UserController {
         userService.passwordUpdate(userDetails, requestDto);
 
         return ResponseEntity.ok()
-                .body(ResponseDto.<UserInfoResponseDto>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("회원정보 수정 성공")
                         .build());
