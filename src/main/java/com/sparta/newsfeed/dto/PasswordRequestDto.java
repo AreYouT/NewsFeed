@@ -2,7 +2,6 @@ package com.sparta.newsfeed.dto;
 
 
 import jakarta.validation.constraints.Pattern;
-
 import lombok.Getter;
 
 @Getter
