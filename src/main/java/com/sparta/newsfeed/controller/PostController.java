@@ -8,14 +8,11 @@ import com.sparta.newsfeed.response.PostResponse;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -32,7 +29,7 @@ public class PostController {
     public ResponseEntity<ResponseDto<PostResponseDto>> savePost(
             @RequestBody PostRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
-    ){
+    ) {
 //        빌더 패턴 적용전 코드
 //        PostResponseDto responseDto = postService.savePost(requestDto, userDetails.getUser());
 //
@@ -54,7 +51,7 @@ public class PostController {
     @GetMapping("/{category}")
     public ResponseEntity<ResponseDto<List<PostResponseDto>>> findByCategoryNameToList(
             @PathVariable String category
-    ){
+    ) {
         return ResponseEntity.ok()
                 .body(ResponseDto.<List<PostResponseDto>>builder()
                         .httpStatus(HttpStatus.OK.value())
@@ -102,8 +99,6 @@ public class PostController {
                     );
         }
     }
-
-
 }
 
 
