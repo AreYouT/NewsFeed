@@ -46,7 +46,7 @@ public class CommentController {
         commentService.updateComment(userDetails.getUser(), requestDto, post_id, comment_id);
 
         return ResponseEntity.ok()
-                .body(ResponseDto.<CommentResponseDto>builder()
+                .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
                         .message("댓글 수정 성공")
                         .build());

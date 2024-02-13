@@ -1,8 +1,8 @@
 package com.sparta.newsfeed.controller;
 
-import com.sparta.newsfeed.dto.PostRequestDto;
-import com.sparta.newsfeed.dto.PostResponseDto;
-import com.sparta.newsfeed.dto.ResponseDto;
+import com.sparta.newsfeed.dto.request.PostRequestDto;
+import com.sparta.newsfeed.dto.response.PostResponseDto;
+import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.PostService;
@@ -29,17 +29,17 @@ public class PostController {
             @RequestBody PostRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
+        postService.savePost(requestDto, userDetails.getUser());
 
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
-                        .message("success")
-                        .data(postService.savePost(requestDto, userDetails.getUser()))
+                        .message("게시글이 정상적으로 등록되었습니다.")
                         .build());
 
     }
 
-    @GetMapping("/{category}")
+    @GetMapping("/mbti/{category}")
     public ResponseEntity<ResponseDto> findByCategoryNameToList(
             @PathVariable String category
     ){
@@ -67,8 +67,9 @@ public class PostController {
         );
     }
 
-    @GetMapping("/{category}/{id}")
-    public ResponseEntity<ResponseDto> getPostById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDto> getPostById(
+            @PathVariable Long id) {
         try {
             Post post = postService.getPostById(id);
             PostResponseDto postResponseDto = new PostResponseDto(post);

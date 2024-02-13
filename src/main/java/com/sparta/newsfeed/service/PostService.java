@@ -1,7 +1,7 @@
 package com.sparta.newsfeed.service;
 
 import com.sparta.newsfeed.dto.request.PostRequestDto;
-import com.sparta.newsfeed.dto.response.PostResponseDto;
+import com.sparta.newsfeed.dto.response.PostListResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.PostRepository;
@@ -29,11 +29,11 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostResponseDto> findByCategoryNameToList(String category) {
+    public List<PostListResponseDto> findByCategoryNameToList(String category) {
         return postRepository.findByCategory(category)
                 .stream()
-                .map(PostResponseDto::new)
-                .sorted(Comparator.comparing(PostResponseDto::getModifiedAt).reversed())
+                .map(PostListResponseDto::new)
+                .sorted(Comparator.comparing(PostListResponseDto::getModifiedAt).reversed())
                 .toList();
     }
 

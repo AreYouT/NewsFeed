@@ -4,7 +4,6 @@ import com.sparta.newsfeed.dto.request.PasswordRequestDto;
 import com.sparta.newsfeed.dto.request.RegisterRequestDto;
 import com.sparta.newsfeed.dto.request.UserInfoRequestDto;
 import com.sparta.newsfeed.dto.response.ResponseDto;
-import com.sparta.newsfeed.dto.response.UserInfoResponseDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
 import jakarta.validation.Valid;
