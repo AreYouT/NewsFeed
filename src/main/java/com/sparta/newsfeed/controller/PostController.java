@@ -126,4 +126,19 @@ public class PostController {
                         .build()
         );
     }
+
+    @PostMapping("{postId}/like")
+    public ResponseEntity<ResponseDto> likePost(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        postService.likePost(postId, userDetails.getUser());
+
+        return ResponseEntity.ok().body(
+                ResponseDto.builder()
+                        .httpStatus(HttpStatus.OK.value())
+                        .message("게시글에 좋아요를 했습니다.")
+                        .build()
+        );
+    }
 }

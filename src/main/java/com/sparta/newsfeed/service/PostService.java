@@ -4,7 +4,9 @@ import com.sparta.newsfeed.dto.request.PostRequestDto;
 import com.sparta.newsfeed.dto.request.UpdateRequestDto;
 import com.sparta.newsfeed.dto.response.PostListResponseDto;
 import com.sparta.newsfeed.entity.Post;
+import com.sparta.newsfeed.entity.PostLike;
 import com.sparta.newsfeed.entity.User;
+import com.sparta.newsfeed.repository.PostLikeRepository;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -21,6 +23,7 @@ import java.util.Objects;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
 
     @Transactional
     public void savePost(PostRequestDto requestDto, User user) {
@@ -62,6 +65,17 @@ public class PostService {
         checkUserID(user,post);
 
         postRepository.delete(post);
+    }
+
+    // 게시글 좋아요
+    @Transactional
+    public void likePost(Long postId, User user) {
+        Post post = getPostById(postId);
+        if(postLikeRepository.existsByUserAndPost(user, post)) {
+            throw new IllegalArgumentException("이미 게시글에 좋아요를 했습니다.");
+        }
+        post.addLike();
+        postLikeRepository.save(new PostLike(user, post));
     }
 
     public Post getPostById(Long id) {
