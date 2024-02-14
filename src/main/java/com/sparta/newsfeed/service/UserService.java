@@ -2,6 +2,7 @@ package com.sparta.newsfeed.service;
 
 import com.sparta.newsfeed.dto.request.PasswordRequestDto;
 import com.sparta.newsfeed.dto.request.RegisterRequestDto;
+import com.sparta.newsfeed.dto.request.UserUpdateRequestDto;
 import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.dto.response.UserInfoResponseDto;
 import com.sparta.newsfeed.entity.User;
@@ -67,16 +68,11 @@ public class UserService {
     }
 
     @Transactional
-    public void userUpdate(UserDetailsImpl userDetails, RegisterRequestDto requestDto){
-        User user = userDetails.getUser();
+    public void userUpdate(User user, UserUpdateRequestDto requestDto){
 
         User findUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
                 () -> new NoSuchElementException("유저가 존재하지 않습니다.")
         );
-
-        if(findUser.getUsername().equals(requestDto.getUsername())){
-            throw new DataIntegrityViolationException("이전 유저명과 동일합니다.");
-        }
 
         findUser.userInfoUpdate(requestDto);
     }

@@ -2,6 +2,7 @@ package com.sparta.newsfeed.controller;
 
 import com.sparta.newsfeed.dto.request.PasswordRequestDto;
 import com.sparta.newsfeed.dto.request.RegisterRequestDto;
+import com.sparta.newsfeed.dto.request.UserUpdateRequestDto;
 import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
@@ -52,7 +53,7 @@ public class UserController {
     @PatchMapping("/update")
     public ResponseEntity<ResponseDto> userUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestBody RegisterRequestDto requestDto,
+            @Valid @RequestBody UserUpdateRequestDto requestDto,
             BindingResult bindingResult){
 
         log.info("회원정보 수정");
@@ -61,7 +62,7 @@ public class UserController {
             return handleValidationResult(bindingResult);
         }
 
-        userService.userUpdate(userDetails, requestDto);
+        userService.userUpdate(userDetails.getUser(), requestDto);
 
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()

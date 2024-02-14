@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.entity;
 
 import com.sparta.newsfeed.dto.request.RegisterRequestDto;
+import com.sparta.newsfeed.dto.request.UserUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
+
+    @Transient
     final String DEFAULTMESSAGE = "잘 부탁드립니다.";
 
     @Id
@@ -39,11 +42,10 @@ public class User {
         this.profileDescription = DEFAULTMESSAGE;
     }
 
-    public void userInfoUpdate(RegisterRequestDto requestDto) {
-        this.username = requestDto.getUsername();
+    public void userInfoUpdate(UserUpdateRequestDto requestDto) {
         this.email = requestDto.getEmail();
         this.mbti = requestDto.getMbti().toUpperCase();
-
+        this.profileDescription = requestDto.getProfileDescription();
     }
 
     public void updatePassword(String password) {
