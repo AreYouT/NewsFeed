@@ -53,12 +53,8 @@ public class PostController {
     }
 
     @GetMapping("/home")
-    public ResponseEntity<ResponseDto> RecommendedPosts() {
-        List<Post> posts = postService.getRecommendedPosts();
-        List<PostResponseDto> postResponseDtos = posts.stream()
-                .map(PostResponseDto::new)
-                .collect(Collectors.toList());
-
+    public ResponseEntity<ResponseDto> recommendedPosts() {
+        List<PostResponseDto> postResponseDtos = postService.getRecommendedPostResponseDtos();
         return ResponseEntity.ok().body(
                 ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
@@ -72,28 +68,20 @@ public class PostController {
     public ResponseEntity<ResponseDto> getPostById(
             @PathVariable Long id
     ) {
-        try {
-            Post post = postService.getPostById(id);
-            postService.updateView(id);
-            PostResponseDto postResponseDto = new PostResponseDto(post);
-
-            return ResponseEntity.ok().body(
-                    ResponseDto.builder()
-                            .httpStatus(HttpStatus.OK.value())
-                            .message("선택한 게시글이 조회되었습니다.")
-                            .data(postResponseDto)
-                            .build()
-            );
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(
-                            ResponseDto.builder()
-                                    .httpStatus(HttpStatus.NOT_FOUND.value())
-                                    .message("해당 ID에 대한 게시글을 찾을 수 없습니다.")
-                                    .build()
-                    );
-        }
+        Post post = postService.getPostById(id);
+        postService.updateView(id);
+        return createPostResponse(post);
     }
+
+    private ResponseEntity<ResponseDto> createPostResponse(Post post) {
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+        return ResponseEntity.ok().body(ResponseDto.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("선택한 게시글이 조회되었습니다.")
+                .data(postResponseDto)
+                .build());
+    }
+
 
     // 게시글 수정
     @PutMapping("/{postId}")
