@@ -91,7 +91,7 @@ public class PostController {
             @RequestBody UpdateRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        Post post = postService.updatePost(postId, dto,userDetails.getUser());
+        postService.updatePost(postId, dto,userDetails.getUser());
 
         return ResponseEntity.ok().body(
                 ResponseDto.builder()
@@ -104,7 +104,6 @@ public class PostController {
     @DeleteMapping("/{postId}")
     public ResponseEntity<ResponseDto> deletePost(
             @PathVariable Long postId,
-            @RequestBody PostRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         postService.deletePost(postId, userDetails.getUser());

@@ -10,9 +10,11 @@ import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.PostLikeRepository;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,13 +61,12 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public Post updatePost(Long postId, UpdateRequestDto dto, User user) {
+    public void updatePost(Long postId, UpdateRequestDto dto, User user) {
         Post post = getPostById(postId);
 
         checkUserID(user,post);
 
         post.update(dto);
-        return postRepository.save(post);
     }
 
     // 게시글 삭제
@@ -83,7 +84,7 @@ public class PostService {
     public void likePost(Long postId, User user) {
         Post post = getPostById(postId);
         if(postLikeRepository.existsByUserAndPost(user, post)) {
-            throw new IllegalArgumentException("이미 게시글에 좋아요를 했습니다.");
+            throw new DataIntegrityViolationException("이미 게시글에 좋아요를 했습니다.");
         }
         post.addLike();
         postLikeRepository.save(new PostLike(user, post));
@@ -95,7 +96,7 @@ public class PostService {
     }
     private void checkUserID(User user, Post post) {
         if(user.getId() != null && !Objects.equals(post.getUser().getId(), user.getId()))
-            throw new IllegalArgumentException();
+            throw new AccessDeniedException("본인이 등록한 게시글만 삭제할 수 있습니다.");
     }
 
     //게시글 조회수 증가
