@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -41,6 +40,13 @@ public class UserController {
                         .httpStatus(HttpStatus.OK.value())
                         .message("회원가입에 성공하였습니다.")
                         .build());
+    }
+
+    @GetMapping("{user_id}")
+    public ResponseEntity<ResponseDto> getUserInfo(@PathVariable Long user_id) {
+        ResponseDto responseDto = userService.getUserInfo(user_id);
+        return ResponseEntity.ok()
+                .body(responseDto);
     }
 
     @PatchMapping("/update")

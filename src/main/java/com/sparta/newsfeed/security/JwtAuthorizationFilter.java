@@ -1,6 +1,5 @@
 package com.sparta.newsfeed.security;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -34,8 +33,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
     }
-
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
@@ -90,8 +87,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         response.put("message", errorMessage);
         res.getWriter().write(objectMapper.writeValueAsString(response));
     }
-
-
 
     // 인증 처리
     public void setAuthentication(String username) {

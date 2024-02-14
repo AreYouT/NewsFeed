@@ -1,7 +1,7 @@
 package com.sparta.newsfeed.controller;
 
 import com.sparta.newsfeed.dto.request.PostRequestDto;
-import com.sparta.newsfeed.dto.request.UpdateRequestDto;
+import com.sparta.newsfeed.dto.request.PostUpdateRequestDto;
 import com.sparta.newsfeed.dto.response.PostListResponseDto;
 import com.sparta.newsfeed.dto.response.PostResponseDto;
 import com.sparta.newsfeed.dto.response.ResponseDto;
@@ -22,7 +22,6 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-
 
     @PostMapping("/save")
     public ResponseEntity<ResponseDto> savePost(
@@ -88,7 +87,7 @@ public class PostController {
     @PutMapping("/{postId}")
     public ResponseEntity<ResponseDto> updatePost(
             @PathVariable Long postId,
-            @RequestBody UpdateRequestDto dto,
+            @RequestBody PostUpdateRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         postService.updatePost(postId, dto,userDetails.getUser());

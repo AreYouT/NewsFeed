@@ -2,13 +2,15 @@ package com.sparta.newsfeed.service;
 
 import com.sparta.newsfeed.dto.request.PasswordRequestDto;
 import com.sparta.newsfeed.dto.request.RegisterRequestDto;
+import com.sparta.newsfeed.dto.response.ResponseDto;
+import com.sparta.newsfeed.dto.response.UserInfoResponseDto;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.UserRepository;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,8 +26,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-
 
     @Transactional
     public void register(RegisterRequestDto requestDto) {
@@ -50,6 +50,20 @@ public class UserService {
         User user = new User(username, password, email, mbti);
         userRepository.save(user);
 
+    }
+
+    public ResponseDto getUserInfo(Long userId) {
+        User findUser = userRepository.findById(userId).orElseThrow(
+                () -> new NoSuchElementException("유저가 존재하지 않습니다.")
+        );
+
+        UserInfoResponseDto responseDto = new UserInfoResponseDto(findUser);
+
+        return ResponseDto.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("유저 조회를 조회했습니다.")
+                .data(responseDto)
+                .build();
     }
 
     @Transactional

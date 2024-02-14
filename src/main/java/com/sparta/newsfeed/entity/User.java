@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
+    final String DEFAULTMESSAGE = "잘 부탁드립니다.";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,17 +28,22 @@ public class User {
     @Column(nullable = false)
     private String mbti;
 
+    @Column(nullable = false)
+    private String profileDescription;
+
     public User(String username, String password, String email, String mbti) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.mbti = mbti.toUpperCase();
+        this.profileDescription = DEFAULTMESSAGE;
     }
 
     public void userInfoUpdate(RegisterRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
         this.mbti = requestDto.getMbti().toUpperCase();
+
     }
 
     public void updatePassword(String password) {

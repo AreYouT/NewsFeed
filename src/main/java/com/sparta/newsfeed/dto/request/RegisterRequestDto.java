@@ -2,6 +2,7 @@ package com.sparta.newsfeed.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
@@ -14,4 +15,6 @@ public class RegisterRequestDto {
     private String email;
     @Pattern(regexp="^[IEie][NSns][FTft][PJpj]$", message = "옳바른 MBTI 형식이 아닙니다.")
     private String mbti;
+    @Size(max = 256)
+    private String profileDescription;
 }
