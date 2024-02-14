@@ -94,6 +94,6 @@ public class UserController {
                             .message(fieldError.getDefaultMessage())
                             .build());
         }
-        throw new IllegalArgumentException("예기치 못한 오류가 발생했습니다.");
+        throw new RuntimeException("예기치 못한 오류가 발생했습니다.");
     }
 }

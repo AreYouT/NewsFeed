@@ -12,8 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -37,21 +37,15 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentResponseDto> getComments(Long post_id){
         List<Comment> comments = commentRepository.findAllByPostId(post_id);
-        List<CommentResponseDto> commentResponseDtoList = new LinkedList<>();
 
-        for (Comment comment : comments) {
-            CommentResponseDto commentResponseDto = new CommentResponseDto(comment, comment.getUser());
-            commentResponseDtoList.add(commentResponseDto);
-        }
-
-        return commentResponseDtoList;
+        return comments.stream().map(comment -> new CommentResponseDto(comment, comment.getUser())).toList();
     }
 
     @Transactional
     public void updateComment(User user, CommentRequestDto requestDto, Long postId, Long commentId) {
-        User findUser = findUserByUsername(user);
+        findUserByUsername(user);
 
-        Post findPost = findPostById(postId);
+        findPostById(postId);
 
         Comment findComment = findCommentById(commentId);
 
@@ -60,9 +54,9 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(User user, Long postId, Long commentId) {
-        User findUser = findUserByUsername(user);
+        findUserByUsername(user);
 
-        Post findPost = findPostById(postId);
+        findPostById(postId);
 
         Comment findComment = findCommentById(commentId);
 
@@ -71,19 +65,19 @@ public class CommentService {
 
     private User findUserByUsername(User user){
         return userRepository.findByUsername(user.getUsername()).orElseThrow(
-                () -> new IllegalArgumentException("유저가 존재하지 않습니다.")
+                () -> new NoSuchElementException("유저가 존재하지 않습니다.")
         );
     }
 
     private Post findPostById(Long postId){
         return postRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("게시글을 찾지 못했습니다.")
+                () -> new NoSuchElementException("게시글을 찾지 못했습니다.")
         );
     }
 
     private Comment findCommentById(Long commentId){
         return commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("댓글을 찾지 못했습니다.")
+                () -> new NoSuchElementException("댓글을 찾지 못했습니다.")
         );
     }
 }
