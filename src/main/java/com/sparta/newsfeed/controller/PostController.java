@@ -14,8 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -90,7 +88,7 @@ public class PostController {
             @RequestBody UpdateRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        Post post = postService.updatePost(postId, dto,userDetails.getUser());
+        postService.updatePost(postId, dto,userDetails.getUser());
 
         return ResponseEntity.ok().body(
                 ResponseDto.builder()
@@ -103,7 +101,6 @@ public class PostController {
     @DeleteMapping("/{postId}")
     public ResponseEntity<ResponseDto> deletePost(
             @PathVariable Long postId,
-            @RequestBody PostRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         postService.deletePost(postId, userDetails.getUser());

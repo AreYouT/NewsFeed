@@ -4,7 +4,6 @@ import com.sparta.newsfeed.dto.request.PostRequestDto;
 import com.sparta.newsfeed.dto.request.UpdateRequestDto;
 import com.sparta.newsfeed.dto.response.PostListResponseDto;
 import com.sparta.newsfeed.dto.response.PostResponseDto;
-import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.PostLike;
 import com.sparta.newsfeed.entity.User;
@@ -12,8 +11,6 @@ import com.sparta.newsfeed.repository.PostLikeRepository;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,13 +56,12 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public Post updatePost(Long postId, UpdateRequestDto dto, User user) {
+    public void updatePost(Long postId, UpdateRequestDto dto, User user) {
         Post post = getPostById(postId);
 
         checkUserID(user,post);
 
         post.update(dto);
-        return postRepository.save(post);
     }
 
     // 게시글 삭제
