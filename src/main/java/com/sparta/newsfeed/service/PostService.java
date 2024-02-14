@@ -95,7 +95,7 @@ public class PostService {
     }
     private void checkUserID(User user, Post post) {
         if(user.getId() != null && !Objects.equals(post.getUser().getId(), user.getId()))
-            throw new IllegalArgumentException();
+            throw new AccessDeniedException("본인이 등록한 게시글만 삭제할 수 있습니다.");
     }
 
     //게시글 조회수 증가
