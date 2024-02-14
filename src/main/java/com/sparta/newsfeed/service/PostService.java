@@ -4,16 +4,15 @@ import com.sparta.newsfeed.dto.request.PostRequestDto;
 import com.sparta.newsfeed.dto.request.UpdateRequestDto;
 import com.sparta.newsfeed.dto.response.PostListResponseDto;
 import com.sparta.newsfeed.dto.response.PostResponseDto;
-import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.PostLike;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.PostLikeRepository;
 import com.sparta.newsfeed.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,10 +47,11 @@ public class PostService {
 
 
     @Transactional(readOnly = true)
-    public List<PostResponseDto> getRecommendedPostResponseDtos() {
-        List<Post> posts = postRepository.findAll(Sort.by("likeCount").descending());
+    public List<PostListResponseDto> getRecommendedPosts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("likeCount").descending());
+        List<Post> posts = postRepository.findAll(pageable).getContent();
         return posts.stream()
-                .map(PostResponseDto::new)
+                .map(PostListResponseDto::new)
                 .collect(Collectors.toList());
     }
 

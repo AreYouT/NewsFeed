@@ -2,6 +2,7 @@ package com.sparta.newsfeed.controller;
 
 import com.sparta.newsfeed.dto.request.PostRequestDto;
 import com.sparta.newsfeed.dto.request.UpdateRequestDto;
+import com.sparta.newsfeed.dto.response.PostListResponseDto;
 import com.sparta.newsfeed.dto.response.PostResponseDto;
 import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.entity.Post;
@@ -14,8 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,8 +52,10 @@ public class PostController {
     }
 
     @GetMapping("/home")
-    public ResponseEntity<ResponseDto> recommendedPosts() {
-        List<PostResponseDto> postResponseDtos = postService.getRecommendedPostResponseDtos();
+    public ResponseEntity<ResponseDto> getRecommendedPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        List<PostListResponseDto> postResponseDtos = postService.getRecommendedPosts(page, size);
         return ResponseEntity.ok().body(
                 ResponseDto.builder()
                         .httpStatus(HttpStatus.OK.value())
