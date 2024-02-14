@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "postlike")
 @NoArgsConstructor
 public class PostLike {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class CommentRequestDto {
-
     @NotBlank(message = "댓글 내용을 입력하세요.")
     @Size(max = 512)
     private String content;

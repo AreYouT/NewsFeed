@@ -2,6 +2,7 @@ package com.sparta.newsfeed.controller;
 
 import com.sparta.newsfeed.dto.request.PasswordRequestDto;
 import com.sparta.newsfeed.dto.request.RegisterRequestDto;
+import com.sparta.newsfeed.dto.request.UserUpdateRequestDto;
 import com.sparta.newsfeed.dto.response.ResponseDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
@@ -14,9 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 
 @Slf4j
 @RestController
@@ -43,10 +41,17 @@ public class UserController {
                         .build());
     }
 
+    @GetMapping("{user_id}")
+    public ResponseEntity<ResponseDto> getUserInfo(@PathVariable Long user_id) {
+        ResponseDto responseDto = userService.getUserInfo(user_id);
+        return ResponseEntity.ok()
+                .body(responseDto);
+    }
+
     @PatchMapping("/update")
     public ResponseEntity<ResponseDto> userUpdate(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestBody RegisterRequestDto requestDto,
+            @Valid @RequestBody UserUpdateRequestDto requestDto,
             BindingResult bindingResult){
 
         log.info("회원정보 수정");
@@ -55,7 +60,7 @@ public class UserController {
             return handleValidationResult(bindingResult);
         }
 
-        userService.userUpdate(userDetails, requestDto);
+        userService.userUpdate(userDetails.getUser(), requestDto);
 
         return ResponseEntity.ok()
                 .body(ResponseDto.builder()

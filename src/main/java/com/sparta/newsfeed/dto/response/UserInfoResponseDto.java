@@ -10,10 +10,12 @@ public class UserInfoResponseDto {
     private String username;
     private String email;
     private String mbti;
+    private String profileDescription;
 
     public UserInfoResponseDto(User user) {
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.mbti = user.getMbti();
+        this.profileDescription = user.getProfileDescription();
     }
 }

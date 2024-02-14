@@ -1,9 +1,8 @@
 package com.sparta.newsfeed.service;
 
 import com.sparta.newsfeed.dto.request.PostRequestDto;
-import com.sparta.newsfeed.dto.request.UpdateRequestDto;
+import com.sparta.newsfeed.dto.request.PostUpdateRequestDto;
 import com.sparta.newsfeed.dto.response.PostListResponseDto;
-import com.sparta.newsfeed.dto.response.PostResponseDto;
 import com.sparta.newsfeed.entity.Post;
 import com.sparta.newsfeed.entity.PostLike;
 import com.sparta.newsfeed.entity.User;
@@ -14,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +46,6 @@ public class PostService {
                 .toList();
     }
 
-
     @Transactional(readOnly = true)
     public List<PostListResponseDto> getRecommendedPosts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("likeCount").descending());
@@ -56,11 +55,9 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-
-
     // 게시글 수정
     @Transactional
-    public void updatePost(Long postId, UpdateRequestDto dto, User user) {
+    public void updatePost(Long postId, PostUpdateRequestDto dto, User user) {
         Post post = getPostById(postId);
 
         checkUserID(user,post);

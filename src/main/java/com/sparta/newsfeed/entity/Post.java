@@ -1,8 +1,7 @@
 package com.sparta.newsfeed.entity;
 
-
 import com.sparta.newsfeed.dto.request.PostRequestDto;
-import com.sparta.newsfeed.dto.request.UpdateRequestDto;
+import com.sparta.newsfeed.dto.request.PostUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,11 +31,9 @@ public class Post extends Timestamped{
     @Column(nullable = true)
     private Long viewCount = 0L;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
 
     public Post(PostRequestDto requestDto, User user) {
         this.category = requestDto.getCategory();
@@ -45,8 +42,7 @@ public class Post extends Timestamped{
         this.user = user;
     }
 
-
-    public void update(UpdateRequestDto dto) {
+    public void update(PostUpdateRequestDto dto) {
         this.title = dto.getTitle();
         this.contents = dto.getContents();
     }
