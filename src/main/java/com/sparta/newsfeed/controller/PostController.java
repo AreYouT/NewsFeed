@@ -52,7 +52,7 @@ public class PostController {
 
     @GetMapping("/home")
     public ResponseEntity<ResponseDto> getRecommendedPosts(
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         List<PostListResponseDto> postResponseDtos = postService.getRecommendedPosts(page, size);
         return ResponseEntity.ok().body(

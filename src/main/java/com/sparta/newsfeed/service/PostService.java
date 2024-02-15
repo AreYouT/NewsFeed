@@ -48,7 +48,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public List<PostListResponseDto> getRecommendedPosts(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("likeCount").descending());
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("likeCount").descending());
         List<Post> posts = postRepository.findAll(pageable).getContent();
         return posts.stream()
                 .map(PostListResponseDto::new)
