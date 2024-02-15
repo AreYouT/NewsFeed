@@ -62,7 +62,7 @@ public class UserService {
 
         return ResponseDto.builder()
                 .httpStatus(HttpStatus.OK.value())
-                .message("유저 조회를 조회했습니다.")
+                .message("유저를 조회했습니다.")
                 .data(responseDto)
                 .build();
     }
